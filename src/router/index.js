@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "../page/home";
 import { MakeResume } from "../page/makeResume";
 import { ResumeTemp } from "../page/resumeTemp";

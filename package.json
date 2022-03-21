@@ -4,6 +4,7 @@
   "private": true,
   "main": "./app/main.js",
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -23,7 +24,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "ele": "electron .",
+    "ele": "electron ./app/main.js",
     "dev": "concurrently \"cross-env BROWSER=none npm start\"  \"wait-on http://localhost:3000 && npm run ele\"",
     "prepare": "husky install"
   },
