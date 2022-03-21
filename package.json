@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "ele": "electron .",
+    "ele": "nodemon --watch ./app/main.js --exec \"electron .\"",
     "dev": "concurrently \"cross-env BROWSER=none npm start\"  \"wait-on http://localhost:3000 && npm run ele\"",
     "prepare": "husky install"
   },
@@ -54,6 +54,7 @@
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
+    "nodemon": "^2.0.15",
     "prettier": "2.6.0",
     "wait-on": "^6.0.1"
   },
