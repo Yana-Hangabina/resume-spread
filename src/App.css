@@ -1,1 +1,48 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
+
+@font-face {
+  font-family: "Noto Sans SC";
+  font-weight: 100;
+  src: url("./assets/fonts/NotoSansSC-Thin.otf");
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  font-weight: 300;
+  src: url("./assets/fonts/NotoSansSC-Light.otf");
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  font-weight: 400;
+  src: url("./assets/fonts/NotoSansSC-Regular.otf");
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  font-weight: 500;
+  src: url("./assets/fonts/NotoSansSC-Medium.otf");
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  font-weight: 700;
+  src: url("./assets/fonts/NotoSansSC-Bold.otf");
+}
+
+@font-face {
+  font-family: "Noto Sans SC";
+  font-weight: 900;
+  src: url("./assets/fonts/NotoSansSC-Black.otf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans SC";
+}
+
+html,
+body {
+  min-height: 100%;
+}
