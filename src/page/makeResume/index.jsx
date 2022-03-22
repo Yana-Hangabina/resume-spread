@@ -2,7 +2,7 @@ import { Modal, Button, Input } from "antd";
 import React, { useState } from "react";
 import { TopHeader } from "../../components/topHeader";
 import styled from "styled-components";
-import { useNavigate } from "react-router";
+import { Route, Routes, useNavigate } from "react-router";
 import { DndProvider, useDrop } from "react-dnd";
 import Text from "../../components/text";
 import {
@@ -11,6 +11,7 @@ import {
   FileDoneOutlined,
 } from "@ant-design/icons";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import Editor from "./newResume";
 
 const fs = require("fs");
 console.log(fs);
@@ -33,6 +34,7 @@ export const MakeResume = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
+    navigate("/makeresume/resume");
   };
 
   const handleCancel = () => {
@@ -58,53 +60,64 @@ export const MakeResume = () => {
   return (
     <div>
       <TopHeader />
-      <Modal
-        closable={false}
-        maskClosable={false}
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        okText="确定"
-        cancelText="取消"
-      >
-        <Input
-          placeholder="请输入模板名"
-          allowClear
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Modal>
-      <BtnGroup>
-        <DivBtn
-          onClick={() => {
-            showModal();
-          }}
-        >
-          <FileOutlined />
-          <div
-            style={{
-              fontSize: 16,
-              margin: "5px 0 0",
-            }}
-          >
-            新建空白简历
-          </div>
-        </DivBtn>
-        <DivBtn
-          onClick={() => {
-            navigate("/resumetemp");
-          }}
-        >
-          <FileDoneOutlined />
-          <div
-            style={{
-              fontSize: 16,
-              margin: "5px 0 0",
-            }}
-          >
-            使用本地模板
-          </div>
-        </DivBtn>
-      </BtnGroup>
+      <Routes>
+        <Route
+          path="/"
+          exact
+          element={
+            <>
+              <Modal
+                closable={false}
+                maskClosable={false}
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Input
+                  placeholder="请输入模板名"
+                  allowClear
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Modal>
+              <BtnGroup>
+                <DivBtn
+                  onClick={() => {
+                    showModal();
+                  }}
+                >
+                  <FileOutlined />
+                  <div
+                    style={{
+                      fontSize: 16,
+                      margin: "5px 0 0",
+                    }}
+                  >
+                    新建空白简历
+                  </div>
+                </DivBtn>
+                <DivBtn
+                  onClick={() => {
+                    navigate("/resumetemp");
+                  }}
+                >
+                  <FileDoneOutlined />
+                  <div
+                    style={{
+                      fontSize: 16,
+                      margin: "5px 0 0",
+                    }}
+                  >
+                    使用本地模板
+                  </div>
+                </DivBtn>
+              </BtnGroup>
+            </>
+          }
+        ></Route>
+        <Route path="/resume" element={<Editor />}></Route>
+      </Routes>
     </div>
   );
 };
@@ -169,4 +182,30 @@ const Paper = styled.div`
   width: 100%;
   height: 100%;
   background-color: #fff;
+`;
+
+const MidContent = styled.div`
+  flex: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const HeaderMenu = styled.div`
+  width: 100%;
+  height: 70px;
+  display: flex;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 10px 20px #efefef;
+`;
+
+const MenuBtnGroup = styled.div`
+  display: flex;
+  min-width: 280px;
+  justify-content: space-around;
 `;
