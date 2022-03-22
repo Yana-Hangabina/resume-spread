@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from "../../assets/logo.png";
 import styled from "styled-components";
-import { useNavigate } from 'react-router'
+import { useNavigate } from "react-router";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -10,11 +10,13 @@ export const Home = () => {
       <img src={Logo} alt="logo" width={"200px"} height={"200px"} />
       <Text>Résumé 展开：拖拽式的低代码简历页面生成器</Text>
       <div className="btn-group">
-        <BtnContainer onClick={() => {
-          navigate('/makeresume')
-        }}>
+        <BtnContainer
+          onClick={() => {
+            navigate("/makeresume");
+          }}
+        >
           <span>Get Start</span>
-          <div class="liquid"></div>
+          <div className="liquid"></div>
         </BtnContainer>
         <BtnContainer>
           <span style={{ color: "#000" }}>了解我们</span>
