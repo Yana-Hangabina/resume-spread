@@ -11,7 +11,7 @@ function createWindow() {
     width: 1200,
     height: 800,
     minHeight: 600,
-    minWidth: 800,
+    minWidth: 1200,
     autoHideMenuBar: isDev ? false : true,
     webPreferences: {
       devTools: true,

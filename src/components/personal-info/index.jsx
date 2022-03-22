@@ -7,6 +7,7 @@ import avatar from '../../assets/avatar.png'
 export const PersonalInfo = () => {
   return (
     <InfoContainer>
+      <NameContainer></NameContainer>
       <ComponentTitle title={'个人信息'} />
       <MainContainer>
         <Text>
@@ -25,6 +26,10 @@ export const PersonalInfo = () => {
 const InfoContainer = styled.div`
   /* transform: scale(0.5); */
 `
+const NameContainer = styled.div`
+  display: flex;
+`
+
 const MainContainer = styled.div`
   display: flex;
 `

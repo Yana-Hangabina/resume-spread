@@ -63,10 +63,11 @@ const FadeInContent = keyframes`
     opacity: 1;
   }
 `;
+
 const BtnContainer = styled.button`
   animation: 1s ${FadeInContent} cubic-bezier(0.42, 0, 0.58, 1);
-  cursor: pointer;
   position: relative;
+  cursor: pointer;
   padding: 16px 32px;
   margin: 0 16px;
   min-width: 180px;
@@ -82,7 +83,6 @@ const BtnContainer = styled.button`
     font-size: 1.2rem;
     letter-spacing: 2px;
     z-index: 1;
-  }
   }
 `;
 
