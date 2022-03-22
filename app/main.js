@@ -16,6 +16,7 @@ function createWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
+      preload: path.resolve(__dirname, "preload.js"),
     },
     icon: path.join(__dirname, "../public/favicon.ico"),
   });

@@ -12,6 +12,9 @@ import {
 } from "@ant-design/icons";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
+const fs = require("fs");
+console.log(fs);
+
 export const MakeResume = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
