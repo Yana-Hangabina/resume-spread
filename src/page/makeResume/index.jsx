@@ -1,14 +1,40 @@
-import { Button } from "antd";
+import { Modal, Button, Input } from "antd";
 import React, { useState } from "react";
 import { TopHeader } from "../../components/topHeader";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import { DndProvider, useDrop } from "react-dnd";
 import Text from "../../components/text";
-import { FontSizeOutlined } from "@ant-design/icons";
+import {
+  FontSizeOutlined,
+  FileOutlined,
+  FileDoneOutlined,
+} from "@ant-design/icons";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
 export const MakeResume = () => {
   const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [name, setName] = useState("");
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const PaperDorp = () => {
     const [{ canDrop, isOver }, drop] = useDrop(
@@ -28,45 +54,81 @@ export const MakeResume = () => {
 
   return (
     <div>
-      <TopHeader
-        render={() => {
-          return (
-            <BtnGroup>
-              <Button type={"primary"} size={"large"}>
-                新建简历
-              </Button>
-              <Button
-                type={"primary"}
-                size={"large"}
-                onClick={() => {
-                  navigate("/resumetemp");
-                }}
-              >
-                使用模板
-              </Button>
-            </BtnGroup>
-          );
-        }}
-      />
-      <DndProvider backend={HTML5Backend}>
-        <Container>
-          <ComponentArea>
-            <Text name="文本" icon={<FontSizeOutlined />} Component={Div} />
-          </ComponentArea>
-          <MakeArea>
-            <PaperDorp />
-          </MakeArea>
-          <EditArea></EditArea>
-        </Container>
-      </DndProvider>
+      <TopHeader />
+      <Modal
+        closable={false}
+        maskClosable={false}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="确定"
+        cancelText="取消"
+      >
+        <Input
+          placeholder="请输入模板名"
+          allowClear
+          onChange={(e) => setName(e.target.value)}
+        />
+      </Modal>
+      <BtnGroup>
+        <DivBtn
+          onClick={() => {
+            showModal();
+          }}
+        >
+          <FileOutlined />
+          <div
+            style={{
+              fontSize: 16,
+              margin: "5px 0 0",
+            }}
+          >
+            新建空白简历
+          </div>
+        </DivBtn>
+        <DivBtn
+          onClick={() => {
+            navigate("/resumetemp");
+          }}
+        >
+          <FileDoneOutlined />
+          <div
+            style={{
+              fontSize: 16,
+              margin: "5px 0 0",
+            }}
+          >
+            使用本地模板
+          </div>
+        </DivBtn>
+      </BtnGroup>
     </div>
   );
 };
 
+const DivBtn = styled.div`
+  margin: 0 30px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 100;
+  padding: 15px;
+  cursor: pointer;
+  :hover {
+    color: #1890ff;
+  }
+`;
+
 const BtnGroup = styled.div`
   min-width: 200px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  background-color: #69c0ff;
+  height: calc(100vh - 60px);
 `;
 
 const DragDiv = styled.div`

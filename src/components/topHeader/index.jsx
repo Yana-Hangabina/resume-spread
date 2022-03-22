@@ -12,7 +12,6 @@ export const TopHeader = (props) => {
           navigate(-1);
         }}
       />
-      {props.render()}
     </Container>
   );
 };
