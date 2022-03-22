@@ -10,6 +10,9 @@ function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    minHeight: 600,
+    minWidth: 800,
+    autoHideMenuBar: isDev ? false : true,
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
@@ -19,6 +22,7 @@ function createWindow() {
 
   if (isDev) {
     mainWindow.loadURL(`http://127.0.0.1:3000`);
+    mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadURL(`file://${path.join(__dirname, "../dist/index.html")}`);
   }
