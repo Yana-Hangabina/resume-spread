@@ -5,7 +5,7 @@ const { Sider } = Layout;
 export const SideRight = ({ title, render }) => {
   return (
     <div>
-      <Sider collapsed={false} width={300}>
+      <Sider collapsed={false} width={260} style={{boxShadow:'-10px 10px 20px #efefef'}}>
         <div
           style={{
             display: "flex",
@@ -24,7 +24,6 @@ export const SideRight = ({ title, render }) => {
 
 const RightTitle = styled.div`
   min-height: 60px;
-  background-color: #ccc;
   font-size: 20px;
   text-align: center;
   line-height: 60px;

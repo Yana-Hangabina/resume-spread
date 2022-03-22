@@ -5,7 +5,7 @@ const { Sider } = Layout;
 export const SideLeft = ({ title, menuItems }) => {
   return (
     <div>
-      <Sider collapsed={false} width={300}>
+      <Sider collapsed={false} width={260} style={{boxShadow:'10px 10px 20px #efefef'}}>
         <div
           style={{
             display: "flex",
