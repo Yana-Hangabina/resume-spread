@@ -20,7 +20,7 @@ export const TopHeader = (props) => {
 const Container = styled.div`
   display: flex;
   height: 60px;
-  background-color: #272822;
+  background-color: rgb(0, 21, 41);
   padding: 0 40px;
   justify-content: space-between;
   align-items: center;
