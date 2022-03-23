@@ -12,28 +12,19 @@ import {
 } from "@ant-design/icons";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Editor from "./newResume";
-
-const fs = require("fs");
-console.log(fs);
-
+const { ipcRenderer } = window.require("electron");
 export const MakeResume = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [name, setName] = useState("");
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     setIsModalVisible(false);
+    ipcRenderer.send("async-write-file", name);
     navigate("/makeresume/resume");
   };
 
