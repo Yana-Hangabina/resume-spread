@@ -7,18 +7,37 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
-
+import { DndProvider, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 const globalData = {}; // 全局数据存储（子传父）
 const handleData = (component, data) => {
   globalData[component] = data;
 };
 
+// 创建放置区域
+const PaperDorp = ({ wh }) => {
+  const [{ canDrop, isOver }, dropContainer] = useDrop(
+    () => ({
+      accept: "box",
+      collect: (monitor) => ({
+        canDrop: monitor.canDrop(),
+        isOver: monitor.isOver(),
+      }),
+    }),
+    []
+  );
+  return (
+    <Canvas wh={wh} ref={dropContainer}>
+      <PersonalInfo></PersonalInfo>
+      <Skills handleData={handleData}></Skills>
+    </Canvas>
+  );
+};
+
 const { Option } = Select;
 const menuItems = [
-  <PersonalInfo></PersonalInfo>,
-  <Skills handleData={handleData}></Skills>, // 已知问题：这里的组件需要时不可修改的
-  <Card>111</Card>,
-  <Card>222</Card>,
+  PersonalInfo,
+  Skills, // 已知问题：这里的组件需要时不可修改的
 ];
 const Editor = () => {
   const navigate = useNavigate();
@@ -35,40 +54,40 @@ const Editor = () => {
   };
   return (
     <MainContainer>
-      <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
-      <MidContent>
-        <HeaderMenu>
-          <div>
-            画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp; {/*也许这里应该是A4这样的尺寸？*/}
-            <Select
-              defaultValue="300x450"
-              style={{ width: 120 }}
-              onChange={handleChange}
-            >
-              <Option value="450x800">450x800</Option>
-              <Option value="450x1000">450x1000</Option>
-              <Option value="600x1200">600x1200</Option>
-            </Select>
-          </div>
-          <MenuBtnGroup>
-            <Button type={"default"}>清空画布</Button>
-            <Button type={"primary"} ghost>
-              <SaveTwoTone twoToneColor="#42abf2" />
-              保存
-            </Button>
-            <Button danger>
-              <DeleteTwoTone twoToneColor="#eb2f96" />
-              删除
-            </Button>
-          </MenuBtnGroup>
-        </HeaderMenu>
-        <CanvasContainer>
-          <Canvas wh={wh}>
-            <PersonalInfo></PersonalInfo>
-            <Skills handleData={handleData}></Skills>
-          </Canvas>
-        </CanvasContainer>
-      </MidContent>
+      <DndProvider backend={HTML5Backend}>
+        <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
+        <MidContent>
+          <HeaderMenu>
+            <div>
+              画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp;
+              {/*也许这里应该是A4这样的尺寸？*/}
+              <Select
+                defaultValue="300x450"
+                style={{ width: 120 }}
+                onChange={handleChange}
+              >
+                <Option value="450x800">450x800</Option>
+                <Option value="450x1000">450x1000</Option>
+                <Option value="600x1200">600x1200</Option>
+              </Select>
+            </div>
+            <MenuBtnGroup>
+              <Button type={"default"}>清空画布</Button>
+              <Button type={"primary"} ghost>
+                <SaveTwoTone twoToneColor="#42abf2" />
+                保存
+              </Button>
+              <Button danger>
+                <DeleteTwoTone twoToneColor="#eb2f96" />
+                删除
+              </Button>
+            </MenuBtnGroup>
+          </HeaderMenu>
+          <CanvasContainer>
+            <PaperDorp wh={wh}></PaperDorp>
+          </CanvasContainer>
+        </MidContent>
+      </DndProvider>
       <SideRight
         title={"操作区"}
         render={() => (
@@ -132,4 +151,10 @@ const MenuBtnGroup = styled.div`
   display: flex;
   min-width: 280px;
   justify-content: space-around;
+`;
+
+const Paper = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
 `;

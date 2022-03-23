@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Layout } from "antd";
+import Dragger from "../dragger";
 const { Sider } = Layout;
 export const SideLeft = ({ title, menuItems }) => {
   return (
@@ -19,13 +20,13 @@ export const SideLeft = ({ title, menuItems }) => {
           }}
         >
           <LeftTitle>{title}</LeftTitle>
-          <ComponentMenu >
+          <ComponentMenu>
             {menuItems.map((item, index) => {
               return (
                 /* wran:暂时用index做key */
-                <ComponentItem key={index}>
-                  <div style={{ transform: "scale(0.8)" }}>{item}</div>
-                </ComponentItem>
+                <div key={index} style={{ transform: "scale(0.8)" }}>
+                  <Dragger name={index} Component={item}></Dragger>
+                </div>
               );
             })}
           </ComponentMenu>
