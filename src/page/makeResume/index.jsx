@@ -1,14 +1,36 @@
-import { Button } from "antd";
+import { Modal, Button, Input } from "antd";
 import React, { useState } from "react";
 import { TopHeader } from "../../components/topHeader";
 import styled from "styled-components";
-import { useNavigate } from "react-router";
+import { Route, Routes, useNavigate } from "react-router";
 import { DndProvider, useDrop } from "react-dnd";
 import Text from "../../components/text";
-import { FontSizeOutlined } from "@ant-design/icons";
+import {
+  FontSizeOutlined,
+  FileOutlined,
+  FileDoneOutlined,
+} from "@ant-design/icons";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import Editor from "./newResume";
+const { ipcRenderer } = window.require("electron");
 export const MakeResume = () => {
   const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [name, setName] = useState("");
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+    setIsModalVisible(false);
+    ipcRenderer.send("async-write-file", name);
+    navigate("/makeresume/resume");
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const PaperDorp = () => {
     const [{ canDrop, isOver }, drop] = useDrop(
@@ -28,45 +50,92 @@ export const MakeResume = () => {
 
   return (
     <div>
-      <TopHeader
-        render={() => {
-          return (
-            <BtnGroup>
-              <Button type={"primary"} size={"large"}>
-                新建简历
-              </Button>
-              <Button
-                type={"primary"}
-                size={"large"}
-                onClick={() => {
-                  navigate("/resumetemp");
-                }}
+      <TopHeader />
+      <Routes>
+        <Route
+          path="/"
+          exact
+          element={
+            <>
+              <Modal
+                closable={false}
+                maskClosable={false}
+                visible={isModalVisible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                okText="确定"
+                cancelText="取消"
               >
-                使用模板
-              </Button>
-            </BtnGroup>
-          );
-        }}
-      />
-      <DndProvider backend={HTML5Backend}>
-        <Container>
-          <ComponentArea>
-            <Text name="文本" icon={<FontSizeOutlined />} Component={Div} />
-          </ComponentArea>
-          <MakeArea>
-            <PaperDorp />
-          </MakeArea>
-          <EditArea></EditArea>
-        </Container>
-      </DndProvider>
+                <Input
+                  placeholder="请输入模板名"
+                  allowClear
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Modal>
+              <BtnGroup>
+                <DivBtn
+                  onClick={() => {
+                    showModal();
+                  }}
+                >
+                  <FileOutlined />
+                  <div
+                    style={{
+                      fontSize: 16,
+                      margin: "5px 0 0",
+                    }}
+                  >
+                    新建空白简历
+                  </div>
+                </DivBtn>
+                <DivBtn
+                  onClick={() => {
+                    navigate("/resumetemp");
+                  }}
+                >
+                  <FileDoneOutlined />
+                  <div
+                    style={{
+                      fontSize: 16,
+                      margin: "5px 0 0",
+                    }}
+                  >
+                    使用本地模板
+                  </div>
+                </DivBtn>
+              </BtnGroup>
+            </>
+          }
+        ></Route>
+        <Route path="/resume" element={<Editor />}></Route>
+      </Routes>
     </div>
   );
 };
 
+const DivBtn = styled.div`
+  margin: 0 30px;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 100;
+  padding: 15px;
+  cursor: pointer;
+  :hover {
+    color: #1890ff;
+  }
+`;
+
 const BtnGroup = styled.div`
   min-width: 200px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
+  background-color: #69c0ff;
+  height: calc(100vh - 60px);
 `;
 
 const DragDiv = styled.div`
@@ -104,4 +173,30 @@ const Paper = styled.div`
   width: 100%;
   height: 100%;
   background-color: #fff;
+`;
+
+const MidContent = styled.div`
+  flex: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const HeaderMenu = styled.div`
+  width: 100%;
+  height: 70px;
+  display: flex;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 10px 20px #efefef;
+`;
+
+const MenuBtnGroup = styled.div`
+  display: flex;
+  min-width: 280px;
+  justify-content: space-around;
 `;

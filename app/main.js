@@ -2,8 +2,31 @@
  * @desc electron 主入口
  */
 const path = require("path");
-const { app, BrowserWindow } = require("electron");
+const fs = require("fs");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
+const { postDb, getDb } = require("../src/util/file");
+
+const filePath = app.getAppPath();
+const dataPath = filePath + "/data/";
+
+ipcMain.on("read-data-path", function () {});
+
+// 初始化项目配置文件
+ipcMain.on("async-write-file", async function (event, arg) {
+  fs.mkdir(dataPath + arg, function (e) {
+    console.log(e);
+  });
+  postDb(dataPath + arg + "/setting.json", {
+    preview: "",
+    settings: {},
+  });
+});
+
+ipcMain.handle("load-settings", async (event, args) => {
+  const settings = await getDb(dataPath + args + "/setting.json");
+  return settings;
+});
 
 function createWindow() {
   // 创建浏览器窗口
@@ -16,6 +39,7 @@ function createWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
+      preload: path.resolve(__dirname, "preload.js"),
     },
     icon: path.join(__dirname, "../public/favicon.ico"),
   });
