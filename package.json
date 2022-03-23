@@ -67,6 +67,7 @@
     "terser-webpack-plugin": "^5.2.5",
     "url": "^0.11.0",
     "util": "^0.12.4",
+    "uuid": "^8.3.2",
     "web-vitals": "^2.1.4",
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
@@ -165,8 +166,6 @@
     "resetMocks": true
   },
   "babel": {
-    "presets": [
-      "react-app"
-    ]
+    "presets": []
   }
 }

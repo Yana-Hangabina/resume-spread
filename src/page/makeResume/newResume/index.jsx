@@ -105,7 +105,7 @@ const Canvas = styled.div`
   height: ${({ wh }) => (wh.height ? wh.height : "800px")};
   box-shadow: 10px 10px 30px #cecece, -10px -10px 30px #ffffff;
   background-clip: #fff;
-  padding: 10px;
+  padding: 10px 15px;
   margin: 20px 0;
 `;
 
