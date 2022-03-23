@@ -8,10 +8,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 
+const globalData = {}; // 全局数据存储（子传父）
+const handleData = (component, data) => {
+  globalData[component] = data;
+};
+
 const { Option } = Select;
 const menuItems = [
   <PersonalInfo></PersonalInfo>,
-  <Skills></Skills>, // 已知问题：这里的组件需要时不可修改的；物料区小圆点不显示
+  <Skills handleData={handleData}></Skills>, // 已知问题：这里的组件需要时不可修改的
   <Card>111</Card>,
   <Card>222</Card>,
 ];
@@ -60,7 +65,7 @@ const Editor = () => {
         <CanvasContainer>
           <Canvas wh={wh}>
             <PersonalInfo></PersonalInfo>
-            <Skills></Skills>
+            <Skills handleData={handleData}></Skills>
           </Canvas>
         </CanvasContainer>
       </MidContent>
