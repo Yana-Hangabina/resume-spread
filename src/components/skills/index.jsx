@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ComponentTitle } from "../component-title";
 import { v4 as uuid } from "uuid";
 
 const PLACEHOLDER = "人在江湖，须有一技傍身";
 
-const RenderSkills = () => {
+const RenderSkills = (props) => {
     const [skillsList, setSkillsList] = useState([{
         id: uuid(),
         text: PLACEHOLDER,
         isEditing: false,
     }]);
+
+    useEffect(() => {
+        props("skills", skillsList);
+    }, [skillsList]);
 
     return (
         <SkillList>
@@ -75,11 +79,11 @@ const RenderSkills = () => {
     );
 };
 
-export const Skills = () => {
+export const Skills = (props) => {
     return (
         <InfoContainer>
             <ComponentTitle title={"个人技能"} />
-            <MainContainer>{RenderSkills()}</MainContainer>
+            <MainContainer>{RenderSkills(props.handleData)}</MainContainer>
         </InfoContainer>
     );
 };
@@ -90,9 +94,11 @@ const MainContainer = styled.div`
     display: flex;
 `;
 const SkillList = styled.ul`
-    list-style-position:inside;
+    list-style-position: inside;
 `;
 const List = styled.li`
+list-style-position: inside;
+list-style-type: disc;
     display: list-item;
 `;
 const Input = styled.input``;
