@@ -23,8 +23,8 @@ const menuItems = [
 const Editor = () => {
   const navigate = useNavigate();
   const [wh, setWh] = useState({
-    width: "300px",
-    height: "450px",
+    width: "450px",
+    height: "800px",
   });
   const handleChange = (value) => {
     let arr = value.split("x");
@@ -45,9 +45,9 @@ const Editor = () => {
               style={{ width: 120 }}
               onChange={handleChange}
             >
-              <Option value="300x450">300x450</Option>
-              <Option value="300x600">300x600</Option>
-              <Option value="400x800">400x800</Option>
+              <Option value="450x800">450x800</Option>
+              <Option value="450x1000">450x1000</Option>
+              <Option value="600x1200">600x1200</Option>
             </Select>
           </div>
           <MenuBtnGroup>
@@ -86,8 +86,8 @@ export default Editor;
 
 const MainContainer = styled.div`
   height: calc(100vh - 60px);
-  background-color: rgb(237, 242, 255);
   display: flex;
+  min-width: 1200px;
 `;
 
 const MidContent = styled.div`
@@ -103,17 +103,18 @@ const CanvasContainer = styled.div`
   flex: 1;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  overflow: auto;
+  overflow-y: auto;
 `;
 
 const Canvas = styled.div`
-  width: ${({ wh }) => (wh.width ? wh.width : "300px")};
-  height: ${({ wh }) => (wh.height ? wh.height : "500px")};
-  /* width: 300px;
-  height: 400px; */
-  background-color: aqua;
+  width: ${({ wh }) => (wh.width ? wh.width : "450px")};
+  height: ${({ wh }) => (wh.height ? wh.height : "800px")};
+  box-shadow: 10px 10px 30px #cecece, -10px -10px 30px #ffffff;
+  background-clip: #fff;
+  padding: 10px 15px;
+  margin: 20px 0;
 `;
 
 const HeaderMenu = styled.div`
@@ -121,10 +122,10 @@ const HeaderMenu = styled.div`
   height: 60px;
   display: flex;
   padding: 0 20px;
-  margin-bottom: 20px;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 10px 20px #efefef;
+  background-color: #fff;
 `;
 
 const MenuBtnGroup = styled.div`

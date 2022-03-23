@@ -1,11 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { Menu, Layout, Card } from "antd";
+import { Layout } from "antd";
 const { Sider } = Layout;
 export const SideLeft = ({ title, menuItems }) => {
   return (
     <div>
-      <Sider collapsed={false} width={260} style={{boxShadow:'10px 10px 20px #efefef'}}>
+      <Sider
+        theme="light"
+        collapsed={false}
+        width={260}
+        style={{ boxShadow: "10px 10px 20px #efefef" }}
+      >
         <div
           style={{
             display: "flex",
@@ -14,12 +19,12 @@ export const SideLeft = ({ title, menuItems }) => {
           }}
         >
           <LeftTitle>{title}</LeftTitle>
-          <ComponentMenu theme="light" mode="inline">
+          <ComponentMenu >
             {menuItems.map((item, index) => {
               return (
                 /* wran:暂时用index做key */
                 <ComponentItem key={index}>
-                  <Card>{item}</Card>
+                  <div style={{ transform: "scale(0.8)" }}>{item}</div>
                 </ComponentItem>
               );
             })}
@@ -32,17 +37,19 @@ export const SideLeft = ({ title, menuItems }) => {
 
 const LeftTitle = styled.div`
   min-height: 60px;
-  background-color: #ccc;
+  background-color: #e0e0e0;
   font-size: 20px;
   text-align: center;
   line-height: 60px;
 `;
 
-const ComponentMenu = styled(Menu)`
+const ComponentMenu = styled.div`
   height: 100%;
   overflow-y: auto;
 `;
 
-const ComponentItem = styled(Menu.Item)`
-  min-height: 100px;
+const ComponentItem = styled.div`
+  border: 1px solid #ccc;
+  margin: 2px;
+  border-radius: 5px;
 `;
