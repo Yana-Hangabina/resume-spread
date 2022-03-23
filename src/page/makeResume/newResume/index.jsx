@@ -5,42 +5,25 @@ import { Skills } from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-const globalData = {}; // 全局数据存储（子传父）
-const handleData = (component, data) => {
-  globalData[component] = data;
-};
+import Test from "../../../components/test";
+import { connect } from "react-redux";
+import PaperDrop from "../../../components/paper-drop";
 
 // 创建放置区域
-const PaperDorp = ({ wh }) => {
-  const [{ canDrop, isOver }, dropContainer] = useDrop(
-    () => ({
-      accept: "box",
-      collect: (monitor) => ({
-        canDrop: monitor.canDrop(),
-        isOver: monitor.isOver(),
-      }),
-    }),
-    []
-  );
-  return (
-    <Canvas wh={wh} ref={dropContainer}>
-      <PersonalInfo></PersonalInfo>
-      <Skills handleData={handleData}></Skills>
-    </Canvas>
-  );
-};
 
 const { Option } = Select;
 const menuItems = [
-  PersonalInfo,
-  Skills, // 已知问题：这里的组件需要时不可修改的
+  {
+    name: "PersonalInfo",
+    Component: PersonalInfo,
+  },
+  { name: "Skills", Component: Skills },
+  { name: "Test", Component: Test },
 ];
 const Editor = () => {
-  const navigate = useNavigate();
   const [wh, setWh] = useState({
     width: "450px",
     height: "800px",
@@ -84,7 +67,7 @@ const Editor = () => {
             </MenuBtnGroup>
           </HeaderMenu>
           <CanvasContainer>
-            <PaperDorp wh={wh}></PaperDorp>
+            <PaperDrop menuItems={menuItems} wh={wh}></PaperDrop>
           </CanvasContainer>
         </MidContent>
       </DndProvider>
@@ -101,7 +84,9 @@ const Editor = () => {
   );
 };
 
-export default Editor;
+export default connect((state) => {
+  return state;
+})(Editor);
 
 const MainContainer = styled.div`
   height: calc(100vh - 60px);
@@ -127,15 +112,6 @@ const CanvasContainer = styled.div`
   overflow-y: auto;
 `;
 
-const Canvas = styled.div`
-  width: ${({ wh }) => (wh.width ? wh.width : "450px")};
-  height: ${({ wh }) => (wh.height ? wh.height : "800px")};
-  box-shadow: 10px 10px 30px #cecece, -10px -10px 30px #ffffff;
-  background-clip: #fff;
-  padding: 10px 15px;
-  margin: 20px 0;
-`;
-
 const HeaderMenu = styled.div`
   width: 100%;
   height: 60px;
@@ -151,10 +127,4 @@ const MenuBtnGroup = styled.div`
   display: flex;
   min-width: 280px;
   justify-content: space-around;
-`;
-
-const Paper = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
 `;

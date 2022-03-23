@@ -23,9 +23,11 @@ export const SideLeft = ({ title, menuItems }) => {
           <ComponentMenu>
             {menuItems.map((item, index) => {
               return (
-                /* wran:暂时用index做key */
                 <div key={index} style={{ transform: "scale(0.8)" }}>
-                  <Dragger name={index} Component={item}></Dragger>
+                  <Dragger
+                    name={item.name}
+                    Component={item.Component}
+                  ></Dragger>
                 </div>
               );
             })}

@@ -8,12 +8,8 @@ const Dragger = ({ Component, name }) => {
         type: name,
       },
       collect: (monitor) => ({
-        offset: monitor.getClientOffset(),
         isDrag: monitor.isDragging(),
       }),
-      end: (item, monitor) => {
-        console.log(item, monitor);
-      },
     }),
     []
   );
@@ -22,7 +18,7 @@ const Dragger = ({ Component, name }) => {
     <>
       <Box>
         <div ref={drager}>
-          <Component />
+          <Component isShot={true} />
         </div>
         <div
           style={{
@@ -32,7 +28,7 @@ const Dragger = ({ Component, name }) => {
             top: 0,
           }}
         >
-          <Component />
+          <Component isShot={true} />
         </div>
       </Box>
     </>

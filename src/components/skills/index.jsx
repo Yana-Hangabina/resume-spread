@@ -6,13 +6,7 @@ import { v4 as uuid } from "uuid";
 const PLACEHOLDER = "人在江湖，须有一技傍身";
 
 const RenderSkills = (props) => {
-  const [skillsList, setSkillsList] = useState([
-    {
-      id: uuid(),
-      text: PLACEHOLDER,
-      isEditing: false,
-    },
-  ]);
+  const [skillsList, setSkillsList] = useState([]);
 
   useEffect(() => {
     if (props) {
