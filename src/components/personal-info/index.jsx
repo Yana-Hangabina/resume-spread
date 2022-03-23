@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ComponentTitle } from "../component-title";
 /* fake Avatar */
-import avatar from "../../assets/avatar.png";
+// import avatar from "../../assets/avatar.png";
+import ImageUpload from "../upload/imgUpload";
+
 import { Input, Form } from "antd";
 import { v4 as uuid } from "uuid";
 
 export const PersonalInfo = () => {
+  const [baseAvatar, setBaseAvatar] = useState(null);
   const [baseInfos, setBaseInfos] = useState([
     {
       id: uuid(),
@@ -42,7 +45,7 @@ export const PersonalInfo = () => {
       isValueEditing: false,
     },
   ]);
-
+  /* 姓名职位信息的失去焦点保存 */
   const handleBlurBase = (idx) => {
     return (e) => {
       if (e.target.value !== "") {
@@ -55,7 +58,7 @@ export const PersonalInfo = () => {
       }
     };
   };
-
+  /* 详细信息键的失去焦点保存 */
   const handleBlurDetailKey = (idx) => {
     return (e) => {
       if (e.target.value !== "") {
@@ -68,7 +71,7 @@ export const PersonalInfo = () => {
       }
     };
   };
-
+  /* 详细信息值的失去焦点保存 */
   const handleBlurDetailValue = (idx) => {
     return (e) => {
       if (e.target.value !== "") {
@@ -81,7 +84,7 @@ export const PersonalInfo = () => {
       }
     };
   };
-
+  /* 姓名职位信息的点击二次编辑 */
   const handleClickBase = (idx) => {
     return () => {
       setBaseInfos((prev) => {
@@ -91,7 +94,7 @@ export const PersonalInfo = () => {
       });
     };
   };
-
+  /* 详细信息键的点击二次编辑 */
   const handleClickDetailKey = (idx) => {
     return () => {
       setDetailInfos((prev) => {
@@ -101,7 +104,7 @@ export const PersonalInfo = () => {
       });
     };
   };
-
+  /* 详细信息值的点击二次编辑 */
   const handleClickDetailValue = (idx) => {
     return () => {
       setDetailInfos((prev) => {
@@ -111,7 +114,7 @@ export const PersonalInfo = () => {
       });
     };
   };
-
+  /* 详细信息键的输入与文本状态 */
   const FormItemLabel = (detailInfo, index) => {
     return detailInfo.isKeyEditing ? (
       <Input
@@ -209,7 +212,22 @@ export const PersonalInfo = () => {
             })}
           </Form>
         </Text>
-        <Avatar src={avatar}></Avatar>
+        {!baseAvatar ? (
+          <ImageUpload
+            accept="image/*"
+            multiple={false}
+            onAfterChange={(files) => {
+              setBaseAvatar(files[0].base64URL);
+            }}
+          />
+        ) : (
+          <AvatarWrapper>
+            <Avatar src={baseAvatar} />
+            <Mask className="mask" onClick={() => setBaseAvatar(null)}>
+              更换
+            </Mask>
+          </AvatarWrapper>
+        )}
       </MainContainer>
     </InfoContainer>
   );
@@ -253,8 +271,31 @@ const FormItem = styled(Form.Item)`
   margin-bottom: 5px;
 `;
 
+const AvatarWrapper = styled.div`
+  position: relative;
+  &:hover {
+    .mask {
+      display: block;
+    }
+  }
+`;
+
 const Avatar = styled.img`
-  width: 60px;
-  height: 80px;
+  width: 84px;
+  height: 102px;
   margin: 10px 0 10px 30px;
+`;
+
+const Mask = styled.div`
+  position: absolute;
+  z-index: 999;
+  text-align: center;
+  line-height: 102px;
+  color: #fff;
+  top: 10px;
+  left: 30px;
+  width: 84px;
+  height: 102px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
 `;
