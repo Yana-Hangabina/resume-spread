@@ -1,6 +1,7 @@
 import { SideLeft } from "../../../components/side-left";
 import { SideRight } from "../../../components/side-right";
 import { PersonalInfo } from "../../../components/personal-info";
+import { Skills } from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 const { Option } = Select;
 const menuItems = [
   <PersonalInfo></PersonalInfo>,
+  <Skills></Skills>, // 已知问题：这里的组件需要时不可修改的；物料区小圆点不显示
   <Card>111</Card>,
   <Card>222</Card>,
 ];
@@ -32,7 +34,7 @@ const Editor = () => {
       <MidContent>
         <HeaderMenu>
           <div>
-            画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp;
+            画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp; {/*也许这里应该是A4这样的尺寸？*/}
             <Select
               defaultValue="300x450"
               style={{ width: 120 }}
@@ -58,6 +60,7 @@ const Editor = () => {
         <CanvasContainer>
           <Canvas wh={wh}>
             <PersonalInfo></PersonalInfo>
+            <Skills></Skills>
           </Canvas>
         </CanvasContainer>
       </MidContent>
