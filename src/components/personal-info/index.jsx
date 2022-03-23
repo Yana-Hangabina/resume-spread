@@ -23,20 +23,23 @@ export const PersonalInfo = () => {
     {
       id: uuid(),
       key: "学历",
-      value: "",
-      isEditing: true,
+      value: "你的院校",
+      isKeyEditing: false,
+      isValueEditing: false,
     },
     {
       id: uuid(),
       key: "手机",
-      value: "",
-      isEditing: true,
+      value: "手机号码",
+      isKeyEditing: false,
+      isValueEditing: false,
     },
     {
       id: uuid(),
       key: "邮箱",
-      value: "",
-      isEditing: true,
+      value: "xxx@xx.com",
+      isKeyEditing: false,
+      isValueEditing: false,
     },
   ]);
 
@@ -53,12 +56,25 @@ export const PersonalInfo = () => {
     };
   };
 
-  const handleBlurDetail = (idx) => {
+  const handleBlurDetailKey = (idx) => {
     return (e) => {
       if (e.target.value !== "") {
         setDetailInfos((prev) => {
           let newInfo = [...prev];
-          newInfo[idx].isEditing = false;
+          newInfo[idx].isKeyEditing = false;
+          newInfo[idx].key = e.target.value;
+          return newInfo;
+        });
+      }
+    };
+  };
+
+  const handleBlurDetailValue = (idx) => {
+    return (e) => {
+      if (e.target.value !== "") {
+        setDetailInfos((prev) => {
+          let newInfo = [...prev];
+          newInfo[idx].isValueEditing = false;
           newInfo[idx].value = e.target.value;
           return newInfo;
         });
@@ -66,17 +82,67 @@ export const PersonalInfo = () => {
     };
   };
 
+  const handleClickBase = (idx) => {
+    return () => {
+      setBaseInfos((prev) => {
+        let newInfo = [...prev];
+        newInfo[idx].isEditing = true;
+        return newInfo;
+      });
+    };
+  };
+
+  const handleClickDetailKey = (idx) => {
+    return () => {
+      setDetailInfos((prev) => {
+        let newInfo = [...prev];
+        newInfo[idx].isKeyEditing = true;
+        return newInfo;
+      });
+    };
+  };
+
+  const handleClickDetailValue = (idx) => {
+    return () => {
+      setDetailInfos((prev) => {
+        let newInfo = [...prev];
+        newInfo[idx].isValueEditing = true;
+        return newInfo;
+      });
+    };
+  };
+
+  const FormItemLabel = (detailInfo, index) => {
+    return detailInfo.isKeyEditing ? (
+      <Input
+        style={{ width: "50px" }}
+        placeholder="请输入"
+        onChange={(e) => {
+          setDetailInfos((prev) => {
+            let newInfo = [...prev];
+            newInfo[index].key = e.target.value;
+            return newInfo;
+          });
+        }}
+        onBlur={handleBlurDetailKey(index)}
+        value={detailInfo.key}
+      />
+    ) : (
+      <span onClick={handleClickDetailKey(index)}>{detailInfo.key}</span>
+    );
+  };
+
   return (
     <InfoContainer>
       <NameContainer>
-        <Name>
+        <Name onClick={handleClickBase(0)}>
           {baseInfos[0].isEditing ? (
             <Input placeholder="姓名" onBlur={handleBlurBase(0)} />
           ) : (
             baseInfos[0].text
           )}
         </Name>
-        <Position>
+        <Position onClick={handleClickBase(1)}>
           {baseInfos[1].isEditing ? (
             <Input placeholder="职位" onBlur={handleBlurBase(1)} />
           ) : (
@@ -91,14 +157,52 @@ export const PersonalInfo = () => {
           <Form name="personal-info" size="small">
             {detailInfos.map((detailInfo, index) => {
               return (
-                <FormItem label={detailInfo.key} key={detailInfo.id}>
-                  {detailInfo.isEditing ? (
+                <FormItem
+                  label={FormItemLabel(detailInfo, index)}
+                  key={detailInfo.id}
+                >
+                  {detailInfo.isValueEditing ? (
                     <Input
-                      placeholder={`请输入${detailInfo.key}`}
-                      onBlur={handleBlurDetail(index)}
+                      style={{ minWidth: "50%" }}
+                      value={detailInfo.value}
+                      placeholder={`请输入`}
+                      onChange={(e) => {
+                        setDetailInfos((prev) => {
+                          let newInfo = [...prev];
+                          newInfo[index].value = e.target.value;
+                          return newInfo;
+                        });
+                      }}
+                      onBlur={handleBlurDetailValue(index)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          setDetailInfos((prev) => {
+                            let newInfo = [...prev];
+                            newInfo.push({
+                              id: uuid(),
+                              key: "xxx",
+                              value: "xxx",
+                              isKeyEditing: true,
+                              isValueEditing: true,
+                            });
+                            return newInfo;
+                          });
+                        } else if (
+                          e.key === "Delete" &&
+                          detailInfos.length > 1
+                        ) {
+                          setDetailInfos((prev) => {
+                            let newInfo = [...prev];
+                            newInfo.splice(index, 1);
+                            return newInfo;
+                          });
+                        }
+                      }}
                     />
                   ) : (
-                    detailInfo.value
+                    <span onClick={handleClickDetailValue(index)}>
+                      {detailInfo.value}
+                    </span>
                   )}
                 </FormItem>
               );
