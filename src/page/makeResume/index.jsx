@@ -1,16 +1,11 @@
-import { Modal, Button, Input } from "antd";
+import { Modal, Input } from "antd";
 import React, { useState } from "react";
 import { TopHeader } from "../../components/topHeader";
 import styled from "styled-components";
 import { Route, Routes, useNavigate } from "react-router";
-import { DndProvider, useDrop } from "react-dnd";
-import Text from "../../components/text";
-import {
-  FontSizeOutlined,
-  FileOutlined,
-  FileDoneOutlined,
-} from "@ant-design/icons";
-import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { FileOutlined, FileDoneOutlined } from "@ant-design/icons";
+
 import Editor from "./newResume";
 const { ipcRenderer } = window.require("electron");
 export const MakeResume = () => {
@@ -31,22 +26,6 @@ export const MakeResume = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  const PaperDorp = () => {
-    const [{ canDrop, isOver }, drop] = useDrop(
-      () => ({
-        accept: "box",
-        collect: (monitor) => ({
-          canDrop: monitor.canDrop(),
-          isOver: monitor.isOver(),
-        }),
-      }),
-      []
-    );
-    return <Paper ref={drop} />;
-  };
-
-  const Div = () => <DragDiv />;
 
   return (
     <div>
@@ -167,12 +146,6 @@ const MakeArea = styled.div`
 const EditArea = styled.div`
   width: 24vw;
   height: 100%;
-`;
-
-const Paper = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
 `;
 
 const MidContent = styled.div`

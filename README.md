@@ -68,15 +68,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-<DndProvider backend={HTML5Backend}>
-        <Container>
-          <ComponentArea>
-            <Text name="文本" icon={<FontSizeOutlined />} Component={Div} />
-          </ComponentArea>
-          <MakeArea>
-            <PaperDorp />
-          </MakeArea>
-          <EditArea></EditArea>
-        </Container>
-      </DndProvider>

@@ -5,23 +5,25 @@ import { Skills } from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
+import { DndProvider, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import Test from "../../../components/test";
+import { connect } from "react-redux";
+import PaperDrop from "../../../components/paper-drop";
 
-const globalData = {}; // 全局数据存储（子传父）
-const handleData = (component, data) => {
-  globalData[component] = data;
-};
+// 创建放置区域
 
 const { Option } = Select;
 const menuItems = [
-  <PersonalInfo></PersonalInfo>,
-  <Skills handleData={handleData}></Skills>, // 已知问题：这里的组件需要时不可修改的
-  <Card>111</Card>,
-  <Card>222</Card>,
+  {
+    name: "PersonalInfo",
+    Component: PersonalInfo,
+  },
+  { name: "Skills", Component: Skills },
+  { name: "Test", Component: Test },
 ];
 const Editor = () => {
-  const navigate = useNavigate();
   const [wh, setWh] = useState({
     width: "450px",
     height: "800px",
@@ -35,40 +37,40 @@ const Editor = () => {
   };
   return (
     <MainContainer>
-      <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
-      <MidContent>
-        <HeaderMenu>
-          <div>
-            画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp; {/*也许这里应该是A4这样的尺寸？*/}
-            <Select
-              defaultValue="300x450"
-              style={{ width: 120 }}
-              onChange={handleChange}
-            >
-              <Option value="450x800">450x800</Option>
-              <Option value="450x1000">450x1000</Option>
-              <Option value="600x1200">600x1200</Option>
-            </Select>
-          </div>
-          <MenuBtnGroup>
-            <Button type={"default"}>清空画布</Button>
-            <Button type={"primary"} ghost>
-              <SaveTwoTone twoToneColor="#42abf2" />
-              保存
-            </Button>
-            <Button danger>
-              <DeleteTwoTone twoToneColor="#eb2f96" />
-              删除
-            </Button>
-          </MenuBtnGroup>
-        </HeaderMenu>
-        <CanvasContainer>
-          <Canvas wh={wh}>
-            <PersonalInfo></PersonalInfo>
-            <Skills handleData={handleData}></Skills>
-          </Canvas>
-        </CanvasContainer>
-      </MidContent>
+      <DndProvider backend={HTML5Backend}>
+        <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
+        <MidContent>
+          <HeaderMenu>
+            <div>
+              画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp;
+              {/*也许这里应该是A4这样的尺寸？*/}
+              <Select
+                defaultValue="300x450"
+                style={{ width: 120 }}
+                onChange={handleChange}
+              >
+                <Option value="450x800">450x800</Option>
+                <Option value="450x1000">450x1000</Option>
+                <Option value="600x1200">600x1200</Option>
+              </Select>
+            </div>
+            <MenuBtnGroup>
+              <Button type={"default"}>清空画布</Button>
+              <Button type={"primary"} ghost>
+                <SaveTwoTone twoToneColor="#42abf2" />
+                保存
+              </Button>
+              <Button danger>
+                <DeleteTwoTone twoToneColor="#eb2f96" />
+                删除
+              </Button>
+            </MenuBtnGroup>
+          </HeaderMenu>
+          <CanvasContainer>
+            <PaperDrop menuItems={menuItems} wh={wh}></PaperDrop>
+          </CanvasContainer>
+        </MidContent>
+      </DndProvider>
       <SideRight
         title={"操作区"}
         render={() => (
@@ -82,7 +84,9 @@ const Editor = () => {
   );
 };
 
-export default Editor;
+export default connect((state) => {
+  return state;
+})(Editor);
 
 const MainContainer = styled.div`
   height: calc(100vh - 60px);
@@ -106,15 +110,6 @@ const CanvasContainer = styled.div`
   align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
-`;
-
-const Canvas = styled.div`
-  width: ${({ wh }) => (wh.width ? wh.width : "450px")};
-  height: ${({ wh }) => (wh.height ? wh.height : "800px")};
-  box-shadow: 10px 10px 30px #cecece, -10px -10px 30px #ffffff;
-  background-clip: #fff;
-  padding: 10px 15px;
-  margin: 20px 0;
 `;
 
 const HeaderMenu = styled.div`
