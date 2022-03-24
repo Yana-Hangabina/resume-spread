@@ -81,7 +81,7 @@ function Test({ isShot, cid, settings, $tree }) {
         style: {
           color: "#1890ff",
         },
-        children: "点击添加一行文字",
+        $children: "点击添加一行文字",
       },
     },
   ];

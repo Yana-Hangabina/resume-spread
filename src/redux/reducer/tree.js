@@ -23,13 +23,6 @@ const tree = (state = inialState, actions) => {
       state.tree = state.tree.filter((item) => item.cid !== cid);
       return state;
     case "UPDATE_COMPONENT_SETTINGS":
-      /*
-        cid : 大组件ID
-        fid : 小组件的ID
-
-
-
-      */
       state.tree = state.tree.map((item) => {
         if (item.cid === data.cid) {
           for (let i = 0; i < item.settings.length; i++) {
