@@ -2,7 +2,10 @@ import { Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 import { connect, useDispatch } from "react-redux";
-import { updateComponentSettings } from "../../redux/action/tree";
+import {
+  updateComponentSettings,
+  appendSettings,
+} from "../../redux/action/tree";
 
 const Div = (props) => <div {...props}>点击添加一段文字</div>;
 
@@ -24,6 +27,23 @@ const Text = (props) => {
       <Input
         autoFocus
         style={style}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            dispatch(
+              appendSettings({
+                cid,
+                append: {
+                  name: "Text",
+                  fid: nanoid(),
+                  $settings: {
+                    style: { color: "#1890ff" },
+                    $children: "",
+                  },
+                },
+              })
+            );
+          }
+        }}
         onBlur={() => {
           setState({
             isEditing: false,
@@ -70,9 +90,10 @@ const SwitchComponent = (name) => {
   return fragmentComponent.filter((item) => item.name === name)[0];
 };
 
-function Test({ isShot, cid, settings, $tree }) {
+function Test({ isShot, cid, $tree }) {
   const dispatch = useDispatch();
   const { tree } = $tree;
+
   const shotSetting = [
     {
       id: 1,
@@ -91,6 +112,10 @@ function Test({ isShot, cid, settings, $tree }) {
       return <Item.component key={nanoid()} {...Item.$settings} />;
     });
   }
+
+  let settings = tree.filter((item) => item.cid === cid)[0].settings;
+
+  console.log("@", settings);
 
   return settings.map((Item) => {
     const { Component } = SwitchComponent(Item.name);

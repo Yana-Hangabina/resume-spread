@@ -1,10 +1,11 @@
 import { SideLeft } from "../../../components/side-left";
 import { SideRight } from "../../../components/side-right";
-import { PersonalInfo } from "../../../components/personal-info";
+import PersonalInfo from "../../../components/personal-info";
 import { Skills } from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -12,6 +13,7 @@ import Test from "../../../components/test";
 import Exercitation from "../../../components/exercitation";
 import { connect } from "react-redux";
 import PaperDrop from "../../../components/paper-drop";
+import { RenderOperating } from "../../../components/render-operating";
 
 // 创建放置区域
 
@@ -38,6 +40,10 @@ const Editor = () => {
       height: `${arr[1]}px`,
     });
   };
+
+  /* 选择组件 */
+  const selector = useSelector((state) => state.selector);
+
   return (
     <MainContainer>
       <DndProvider backend={HTML5Backend}>
@@ -76,12 +82,24 @@ const Editor = () => {
       </DndProvider>
       <SideRight
         title={"操作区"}
-        render={() => (
-          <Empty
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={"未选择组件"}
-          />
-        )}
+        render={() => {
+          console.log(selector.currentSettings);
+          return selector.currentComponent ? (
+            <>
+              <RenderOperating
+                obj={{
+                  style1: { color1: "#000", color2: "#111" },
+                  style2: { color3: "#222", color4: "#333" },
+                }}
+              ></RenderOperating>
+            </>
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={"未选择组件"}
+            />
+          );
+        }}
       ></SideRight>
     </MainContainer>
   );

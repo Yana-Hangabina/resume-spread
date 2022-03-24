@@ -9,8 +9,9 @@ const selector = (state = initalState, actions) => {
   switch (type) {
     case "UPDATE_SELECT_COMPONENT":
       let currentComponent = data.currentComponent;
-      let currentSettings = data.currentComponent;
+      let currentSettings = data.currentSettings;
       let currentComponentSelectId = data.currentComponentSelectId;
+
       return {
         currentComponent,
         currentSettings,
