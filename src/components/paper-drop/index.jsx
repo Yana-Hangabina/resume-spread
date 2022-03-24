@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { appendComponent } from "../../redux/action/tree";
 import { nanoid } from "nanoid";
-const PaperDorp = ({ wh, tree, selector, menuItems, appendComponent }) => {
+const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
+  const { tree } = $tree;
   const HitComponent = (name) => {
     return menuItems.filter((item) => item.name === name)[0];
   };
@@ -16,7 +17,7 @@ const PaperDorp = ({ wh, tree, selector, menuItems, appendComponent }) => {
         item: monitor.getItem(),
       }),
       drop: (item, monitor) => {
-        console.log(item, monitor.isOver({ shallow: true }));
+        console.log(item);
         appendComponent({
           id: nanoid(),
           top: 0,
@@ -43,7 +44,7 @@ const PaperDorp = ({ wh, tree, selector, menuItems, appendComponent }) => {
 export default connect(
   (state) => {
     return {
-      tree: state.tree.tree,
+      $tree: state.tree,
       selector: state.selector,
     };
   },
