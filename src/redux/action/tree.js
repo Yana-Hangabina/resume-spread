@@ -12,3 +12,8 @@ export const pushFragment = (data) => ({
   type: "PUSH_FRAGMENT_COMPONENT",
   data,
 });
+
+export const appendSettings = (data) => ({
+  type: "APPEND_COMPONENT_SETTINGS",
+  data,
+});
