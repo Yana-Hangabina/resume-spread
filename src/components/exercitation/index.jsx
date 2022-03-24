@@ -1,6 +1,5 @@
 import React, { useState} from "react";
 import styled from "styled-components";
-import './index.css'
 import { Input } from 'antd';
 const { TextArea } = Input;
 const Exercitation=()=>{
