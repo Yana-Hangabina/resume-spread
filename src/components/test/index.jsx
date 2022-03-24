@@ -1,31 +1,45 @@
 import { Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { useDispatch } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { updateComponentSettings } from "../../redux/action/tree";
 
 const Div = (props) => <div {...props}>点击添加一段文字</div>;
-const Div2 = (props) => {
+
+const Text = (props) => {
+  let $settings = {};
   const [state, setState] = useState({
     isEditing: false,
     text: "",
   });
 
   const { isEditing, text } = state;
+  const { dispatch, fid, cid, tree } = props;
+  let $this = tree.filter((item) => item.cid === cid)[0];
+  $settings = $this.settings.filter((item) => item.fid === fid)[0].$settings;
+  const { $children, style } = $settings;
 
   if (isEditing) {
     return (
       <Input
         autoFocus
-        key={nanoid()}
-        {...props}
+        style={style}
         onBlur={() => {
           setState({
             isEditing: false,
             text,
           });
+          dispatch(
+            updateComponentSettings({
+              cid,
+              fid,
+              $settings: {
+                style,
+                $children: text,
+              },
+            })
+          );
         }}
-        value={text}
         onChange={(e) => {
           setState({
             isEditing,
@@ -40,19 +54,25 @@ const Div2 = (props) => {
       onClick={() => {
         setState({
           isEditing: true,
-          text,
+          text: $children,
         });
       }}
-      {...props}
+      style={style}
     >
-      {text || "点击添加一段文字"}
+      {$children || "点击添加一段文字"}
     </div>
   );
 };
 
-export default function Test({ isShot, id }) {
-  const dispatch = useDispatch();
+const fragmentComponent = [{ name: "Text", Component: Text }];
 
+const SwitchComponent = (name) => {
+  return fragmentComponent.filter((item) => item.name === name)[0];
+};
+
+function Test({ isShot, cid, settings, $tree }) {
+  const dispatch = useDispatch();
+  const { tree } = $tree;
   const shotSetting = [
     {
       id: 1,
@@ -66,36 +86,28 @@ export default function Test({ isShot, id }) {
     },
   ];
 
-  const [settings, setSettings] = useState([
-    {
-      id: 1,
-      component: Div2,
-      $settings: {
-        style: {
-          color: "#1890ff",
-        },
-      },
-    },
-  ]);
-
-  useEffect(() => {
-    if (!isShot) {
-      dispatch(
-        updateComponentSettings({
-          id,
-          settings,
-        })
-      );
-    }
-  }, [settings]);
-
   if (isShot) {
     return shotSetting.map((Item, index) => {
       return <Item.component key={nanoid()} {...Item.$settings} />;
     });
   }
 
-  return settings.map((Item, index) => {
-    return <Item.component key={nanoid()} {...Item.$settings} />;
+  return settings.map((Item) => {
+    const { Component } = SwitchComponent(Item.name);
+    return (
+      <Component
+        fid={Item.fid}
+        tree={tree}
+        key={nanoid()}
+        dispatch={dispatch}
+        cid={cid}
+      />
+    );
   });
 }
+
+export default connect((state) => {
+  return {
+    $tree: state.tree,
+  };
+})(Test);
