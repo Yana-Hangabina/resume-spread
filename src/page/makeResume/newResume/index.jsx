@@ -38,7 +38,7 @@ const Editor = () => {
   return (
     <MainContainer>
       <DndProvider backend={HTML5Backend}>
-        <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
+        <SideLeft title={"物料区"} menuItems={menuItems} />
         <MidContent>
           <HeaderMenu>
             <div>
@@ -67,7 +67,7 @@ const Editor = () => {
             </MenuBtnGroup>
           </HeaderMenu>
           <CanvasContainer>
-            <PaperDrop menuItems={menuItems} wh={wh}></PaperDrop>
+            <PaperDrop menuItems={menuItems} wh={wh} />
           </CanvasContainer>
         </MidContent>
       </DndProvider>

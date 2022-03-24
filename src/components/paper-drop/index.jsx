@@ -8,7 +8,6 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   const HitComponent = (name) => {
     return menuItems.filter((item) => item.name === name)[0];
   };
-
   const [{ isOver, item }, dropContainer] = useDrop(
     () => ({
       accept: "box",
@@ -17,11 +16,19 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
         item: monitor.getItem(),
       }),
       drop: (item, monitor) => {
-        console.log(item);
         appendComponent({
-          id: nanoid(),
+          cid: nanoid(),
           top: 0,
-          settings: [],
+          settings: [
+            {
+              name: "Text",
+              fid: nanoid(),
+              $settings: {
+                style: { color: "#1890ff" },
+                $children: "",
+              },
+            },
+          ],
           name: item.type,
         });
       },
@@ -29,7 +36,7 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
     []
   );
 
-  console.log(tree, item);
+  console.log(tree);
 
   return (
     <Canvas wh={wh} ref={dropContainer}>

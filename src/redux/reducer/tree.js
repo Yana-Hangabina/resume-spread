@@ -7,7 +7,7 @@ const inialState = {
     top:0,
     name:'Test',
     settings:[],
-    id:"123"
+    cid:"123"
 }]
 * 
 **/
@@ -19,13 +19,18 @@ const tree = (state = inialState, actions) => {
       state.tree.push(data);
       return state;
     case "DELETE_COMPONENT":
-      let { id } = data;
-      state.tree = state.tree.filter((item) => item.id !== id);
+      let { cid } = data;
+      state.tree = state.tree.filter((item) => item.cid !== cid);
       return state;
     case "UPDATE_COMPONENT_SETTINGS":
       state.tree = state.tree.map((item) => {
-        if (item.id === data.id) {
-          item.settings = data.settings;
+        if (item.cid === data.cid) {
+          for (let i = 0; i < item.settings.length; i++) {
+            if (item.settings[i].fid === data.fid) {
+              item.settings[i].$settings = data.$settings;
+              break;
+            }
+          }
         }
         return item;
       });
