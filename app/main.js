@@ -15,11 +15,17 @@ ipcMain.on("read-data-path", function () {});
 // 初始化项目配置文件
 ipcMain.on("async-write-file", async function (event, arg) {
   fs.mkdir(dataPath + arg, function (e) {
-    console.log(e);
-  });
-  postDb(dataPath + arg + "/setting.json", {
-    preview: "",
-    settings: {},
+    if (e) {
+      fs.mkdir(dataPath, function (e) {
+        console.log(e);
+      });
+    }
+    fs.mkdir(dataPath + arg, function (e) {
+      postDb(dataPath + arg + "/setting.json", {
+        preview: "",
+        settings: {},
+      });
+    });
   });
 });
 
