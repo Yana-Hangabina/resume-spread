@@ -1,6 +1,8 @@
 import { Input } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import { useDispatch } from "react-redux";
+import { updateComponentSettings } from "../../redux/action/tree";
 
 const Div = (props) => <div {...props}>点击添加一段文字</div>;
 const Div2 = (props) => {
@@ -49,6 +51,8 @@ const Div2 = (props) => {
 };
 
 export default function Test({ isShot, id }) {
+  const dispatch = useDispatch();
+
   const shotSetting = [
     {
       id: 1,
@@ -73,6 +77,17 @@ export default function Test({ isShot, id }) {
       },
     },
   ]);
+
+  useEffect(() => {
+    if (!isShot) {
+      dispatch(
+        updateComponentSettings({
+          id,
+          settings,
+        })
+      );
+    }
+  }, [settings]);
 
   if (isShot) {
     return shotSetting.map((Item, index) => {

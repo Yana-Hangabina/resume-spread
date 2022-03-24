@@ -50,9 +50,3 @@ const ComponentMenu = styled.div`
   height: 100%;
   overflow-y: auto;
 `;
-
-const ComponentItem = styled.div`
-  border: 1px solid #ccc;
-  margin: 2px;
-  border-radius: 5px;
-`;
