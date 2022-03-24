@@ -12,6 +12,7 @@ const RenderSkills = (props) => {
     if (props) {
       props("skills", skillsList);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skillsList]);
 
   if (!props) {
@@ -28,7 +29,7 @@ const RenderSkills = (props) => {
   return (
     <SkillList>
       {skillsList.map((item, index) => {
-        if (item.isEditing == false) {
+        if (item.isEditing === false) {
           return (
             <List
               key={item.id}
@@ -58,7 +59,7 @@ const RenderSkills = (props) => {
                 }}
                 value={item.text}
                 onKeyDown={(e) => {
-                  if (e.key == "Enter") {
+                  if (e.key === "Enter") {
                     e.preventDefault();
                     setSkillsList((prev) => {
                       let newList = [...prev];
@@ -70,8 +71,8 @@ const RenderSkills = (props) => {
                       });
                       return newList;
                     });
-                  } else if (e.key == "Backspace" && skillsList.length > 1) {
-                    if (item.text == "") {
+                  } else if (e.key === "Backspace" && skillsList.length > 1) {
+                    if (item.text === "") {
                       setSkillsList((prev) => {
                         let newList = [...prev];
                         newList[index - 1].isEditing = true;
