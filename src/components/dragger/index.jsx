@@ -20,7 +20,7 @@ const Dragger = ({ Component, name }) => {
         <div ref={drager}>
           <Component isShot={true} />
         </div>
-        <div
+        {/* <div
           style={{
             position: "absolute",
             left: 0,
@@ -29,7 +29,7 @@ const Dragger = ({ Component, name }) => {
           }}
         >
           <Component isShot={true} />
-        </div>
+        </div> */}
       </Box>
     </>
   );

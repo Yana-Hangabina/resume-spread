@@ -1,14 +1,48 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+// import { connect } from "react-redux";
+import { updateSelectComponent } from "../../redux/action/selector";
 import { ComponentTitle } from "../component-title";
 /* fake Avatar */
-// import avatar from "../../assets/avatar.png";
+import avatar from "../../assets/avatar.png";
 import ImageUpload from "../upload/imgUpload";
 
 import { Input, Form } from "antd";
 import { v4 as uuid } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
 
-export const PersonalInfo = () => {
+const PersonalInfoShot = () => {
+  return (
+    <InfoContainer>
+      <NameContainer>
+        <Name>姓名</Name>
+        <Position>职位</Position>
+        <div></div>
+      </NameContainer>
+      <ComponentTitle title={"基本资料"} />
+      <MainContainer>
+        <Text>
+          <Form name="personal-info" size="small">
+            <FormItem label={"学历"} key={1001}>
+              <span>你的院校</span>
+            </FormItem>
+            <FormItem label={"手机"} key={1002}>
+              <span>手机号码</span>
+            </FormItem>
+            <FormItem label={"邮箱"} key={1003}>
+              <span>xxx@xx.com</span>
+            </FormItem>
+          </Form>
+        </Text>
+        <Avatar src={avatar} />
+      </MainContainer>
+    </InfoContainer>
+  );
+};
+
+const RenderPersonalInfo = ({ Item }) => {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
   const [baseAvatar, setBaseAvatar] = useState(null);
   const [baseInfos, setBaseInfos] = useState([
     {
@@ -136,7 +170,17 @@ export const PersonalInfo = () => {
   };
 
   return (
-    <InfoContainer>
+    <InfoContainer
+      onClick={() => {
+        dispatch(
+          updateSelectComponent({
+            currentSettings: Item.$settings,
+            currentComponent: Item.component.name,
+            currentComponentSelectId: Item.id,
+          })
+        );
+      }}
+    >
       <NameContainer>
         <Name onClick={handleClickBase(0)}>
           {baseInfos[0].isEditing ? (
@@ -232,6 +276,48 @@ export const PersonalInfo = () => {
     </InfoContainer>
   );
 };
+
+const PersonalInfo = ({ isShot, id }) => {
+  const shotSetting = [
+    {
+      id: 1,
+      component: PersonalInfoShot,
+      $settings: {
+        style: {
+          color: "#1890ff",
+        },
+        children: "",
+      },
+    },
+  ];
+
+  const [settings, setSettings] = useState([
+    {
+      id: 1,
+      component: RenderPersonalInfo,
+      $settings: {
+        style: {
+          color: "#1890ff",
+        },
+      },
+    },
+  ]);
+
+  if (isShot) {
+    return shotSetting.map((Item, index) => {
+      return <Item.component key={uuid()} {...Item.$settings} />;
+    });
+  }
+
+  return settings.map((Item, index) => {
+    return (
+      // eslint-disable-next-line react/jsx-pascal-case
+      <Item.component Item={Item} key={uuid()} {...Item.$settings} />
+    );
+  });
+};
+
+export default PersonalInfo;
 
 const InfoContainer = styled.div`
   /* transform: scale(0.5); */

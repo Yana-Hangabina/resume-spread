@@ -2,6 +2,7 @@ import { useDrop } from "react-dnd";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { appendComponent } from "../../redux/action/tree";
+
 import { nanoid } from "nanoid";
 const PaperDorp = ({ wh, tree, selector, menuItems, appendComponent }) => {
   const HitComponent = (name) => {
@@ -16,7 +17,7 @@ const PaperDorp = ({ wh, tree, selector, menuItems, appendComponent }) => {
         item: monitor.getItem(),
       }),
       drop: (item, monitor) => {
-        console.log(item, monitor.isOver({ shallow: true }));
+        console.log("19--", item, monitor.isOver({ shallow: true }));
         appendComponent({
           id: nanoid(),
           top: 0,
@@ -28,7 +29,7 @@ const PaperDorp = ({ wh, tree, selector, menuItems, appendComponent }) => {
     []
   );
 
-  console.log(tree, item);
+  console.log("31--", tree, item);
 
   return (
     <Canvas wh={wh} ref={dropContainer}>
