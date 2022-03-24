@@ -9,6 +9,7 @@ import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Test from "../../../components/test";
+import Exercitation from "../../../components/exercitation";
 import { connect } from "react-redux";
 import PaperDrop from "../../../components/paper-drop";
 
@@ -22,6 +23,8 @@ const menuItems = [
   },
   { name: "Skills", Component: Skills },
   { name: "Test", Component: Test },
+  {name:"exercitation",Component:Exercitation},
+  
 ];
 const Editor = () => {
   const [wh, setWh] = useState({
