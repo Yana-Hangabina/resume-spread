@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
-import { DndProvider, useDrop } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Test from "../../../components/test";
 import { connect } from "react-redux";
