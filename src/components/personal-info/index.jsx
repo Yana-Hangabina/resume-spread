@@ -9,7 +9,6 @@ import avatar from "../../assets/avatar.png";
 import ImageUpload from "../upload/imgUpload";
 
 import { Input, Form } from "antd";
-import { v4 as uuid } from "uuid";
 
 const PersonalInfoShot = () => {
   return (
@@ -284,26 +283,18 @@ function PersonalInfo({ isShot, cid, $tree }) {
   ];
 
   if (isShot) {
-    return shotSetting.map((Item, index) => {
+    return shotSetting.map((Item) => {
       return <Item.component key={nanoid()} {...Item.$settings} />;
     });
   }
 
   let settings = tree.filter((item) => item.cid === cid)[0].settings;
 
-  console.log("@", settings);
-
   return settings.map((Item) => {
     const { Component } = SwitchComponent(Item.name);
     return (
-      <InfoContainer>
-        <Component
-          fid={Item.fid}
-          tree={tree}
-          key={nanoid()}
-          dispatch={dispatch}
-          cid={cid}
-        />
+      <InfoContainer key={nanoid()}>
+        <Component fid={Item.fid} tree={tree} dispatch={dispatch} cid={cid} />
       </InfoContainer>
     );
   });

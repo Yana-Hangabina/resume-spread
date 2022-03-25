@@ -112,13 +112,7 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   );
 
   return (
-    <Canvas
-      wh={wh}
-      ref={dropContainer}
-      onMouseMove={(e) => {
-        console.log(e);
-      }}
-    >
+    <Canvas wh={wh} ref={dropContainer}>
       {tree.map((item) => {
         const { Component } = HitComponent(item.name);
         return <Component key={nanoid()} {...item}></Component>;
