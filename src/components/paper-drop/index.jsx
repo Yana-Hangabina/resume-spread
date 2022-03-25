@@ -7,32 +7,84 @@ import { nanoid } from "nanoid";
 
 const switchSettings = (name) => {
   switch (name) {
-    case 'Skills': return [
-      {
-        name: "Skill",
-        fid: nanoid(),
-        $settings: {
-          style: {  },
-          $children: [{
-            sid: nanoid(),
-            text: "输入你的技能",
-            isEditing: false
-          }],
+    case "Skills":
+      return [
+        {
+          name: "Skill",
+          fid: nanoid(),
+          $settings: {
+            style: {},
+            $children: [
+              {
+                sid: nanoid(),
+                text: "输入你的技能",
+                isEditing: false,
+              },
+            ],
+          },
         },
-      },
-    ];
-    default: return [
-      {
-        name: "Text",
-        fid: nanoid(),
-        $settings: {
-          style: { color: "#1890ff" },
-          $children: "",
+      ];
+    case "PersonalInfo":
+      return [
+        {
+          name: "RenderPersonalInfo",
+          fid: nanoid(),
+          $settings: {
+            style: {},
+            $children: [
+              null,
+              [
+                {
+                  id: nanoid(),
+                  text: "输入你的姓名",
+                  isEditing: true,
+                },
+                {
+                  id: nanoid(),
+                  text: "输入你的职位",
+                  isEditing: true,
+                },
+              ],
+              [
+                {
+                  id: nanoid(),
+                  key: "学历",
+                  value: "你的院校",
+                  isKeyEditing: false,
+                  isValueEditing: false,
+                },
+                {
+                  id: nanoid(),
+                  key: "手机",
+                  value: "手机号码",
+                  isKeyEditing: false,
+                  isValueEditing: false,
+                },
+                {
+                  id: nanoid(),
+                  key: "邮箱",
+                  value: "xxx@xx.com",
+                  isKeyEditing: false,
+                  isValueEditing: false,
+                },
+              ],
+            ],
+          },
         },
-      },
-    ]
+      ];
+    default:
+      return [
+        {
+          name: "Text",
+          fid: nanoid(),
+          $settings: {
+            style: { color: "#1890ff" },
+            $children: "",
+          },
+        },
+      ];
   }
-}
+};
 const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   const { tree } = $tree;
   const HitComponent = (name) => {
