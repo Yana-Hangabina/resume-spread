@@ -4,40 +4,46 @@ import styled from "styled-components";
 import { appendComponent } from "../../redux/action/tree";
 
 import { nanoid } from "nanoid";
+import { useState } from "react";
 
 const switchSettings = (name) => {
   switch (name) {
-    case 'Skills': return [
-      {
-        name: "Skill",
-        fid: nanoid(),
-        $settings: {
-          style: {  },
-          $children: [{
-            sid: nanoid(),
-            text: "输入你的技能",
-            isEditing: false
-          }],
+    case "Skills":
+      return [
+        {
+          name: "Skill",
+          fid: nanoid(),
+          $settings: {
+            style: {},
+            $children: [
+              {
+                sid: nanoid(),
+                text: "输入你的技能",
+                isEditing: false,
+              },
+            ],
+          },
         },
-      },
-    ];
-    default: return [
-      {
-        name: "Text",
-        fid: nanoid(),
-        $settings: {
-          style: { color: "#1890ff" },
-          $children: "",
+      ];
+    default:
+      return [
+        {
+          name: "Text",
+          fid: nanoid(),
+          $settings: {
+            style: { color: "#1890ff" },
+            $children: "",
+          },
         },
-      },
-    ]
+      ];
   }
-}
+};
 const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   const { tree } = $tree;
   const HitComponent = (name) => {
     return menuItems.filter((item) => item.name === name)[0];
   };
+  const [clientTop, setClientTop] = useState(0);
   const [{ isOver, item }, dropContainer] = useDrop(
     () => ({
       accept: "box",
@@ -58,7 +64,13 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   );
 
   return (
-    <Canvas wh={wh} ref={dropContainer}>
+    <Canvas
+      wh={wh}
+      ref={dropContainer}
+      onMouseMove={(e) => {
+        console.log(e);
+      }}
+    >
       {tree.map((item) => {
         const { Component } = HitComponent(item.name);
         return <Component key={nanoid()} {...item}></Component>;
