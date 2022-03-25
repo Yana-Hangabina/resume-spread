@@ -2,7 +2,7 @@ import { SideLeft } from "../../../components/side-left";
 import { SideRight } from "../../../components/side-right";
 import PersonalInfo from "../../../components/personal-info";
 import Exercitation from "../../../components/exercitation";
-import { Skills } from "../../../components/skills";
+import Skills from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ const Editor = () => {
   return (
     <MainContainer>
       <DndProvider backend={HTML5Backend}>
-        <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
+        <SideLeft title={"物料区"} menuItems={menuItems} />
         <MidContent>
           <HeaderMenu>
             <div>
@@ -75,7 +75,7 @@ const Editor = () => {
             </MenuBtnGroup>
           </HeaderMenu>
           <CanvasContainer>
-            <PaperDrop menuItems={menuItems} wh={wh}></PaperDrop>
+            <PaperDrop menuItems={menuItems} wh={wh} />
           </CanvasContainer>
         </MidContent>
       </DndProvider>
