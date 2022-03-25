@@ -1,6 +1,7 @@
 import { SideLeft } from "../../../components/side-left";
 import { SideRight } from "../../../components/side-right";
 import PersonalInfo from "../../../components/personal-info";
+import Exercitation from "../../../components/exercitation";
 import { Skills } from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
@@ -10,10 +11,9 @@ import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Test from "../../../components/test";
-import Exercitation from "../../../components/exercitation";
 import { connect } from "react-redux";
 import PaperDrop from "../../../components/paper-drop";
-import { RenderOperating } from "../../../components/render-operating";
+// import { RenderOperating } from "../../../components/render-operating";
 
 // 创建放置区域
 
@@ -27,6 +27,7 @@ const menuItems = [
   { name: "Test", Component: Test },
   {name:"exercitation",Component:Exercitation},
   
+
 ];
 const Editor = () => {
   const [wh, setWh] = useState({
@@ -83,22 +84,10 @@ const Editor = () => {
       <SideRight
         title={"操作区"}
         render={() => {
-          console.log(selector.currentSettings);
-          return selector.currentComponent ? (
-            <>
-              <RenderOperating
-                obj={{
-                  style1: { color1: "#000", color2: "#111" },
-                  style2: { color3: "#222", color4: "#333" },
-                }}
-              ></RenderOperating>
-            </>
-          ) : (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={"未选择组件"}
-            />
-          );
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={"未选择组件"}
+          />;
         }}
       ></SideRight>
     </MainContainer>

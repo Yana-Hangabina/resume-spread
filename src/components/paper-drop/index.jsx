@@ -17,6 +17,7 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
         item: monitor.getItem(),
       }),
       drop: (item, monitor) => {
+
         appendComponent({
           cid: nanoid(),
           top: 0,

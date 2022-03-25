@@ -42,7 +42,7 @@ const PersonalInfoShot = () => {
 
 const RenderPersonalInfo = ({ Item }) => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  // const state = useSelector((state) => state);
   const [baseAvatar, setBaseAvatar] = useState(null);
   const [baseInfos, setBaseInfos] = useState([
     {
