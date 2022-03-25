@@ -2,15 +2,24 @@
  * @desc 上传控件，默认自带的input样式
  * @author {pengdaokuan}
  */
-import React, { useRef } from 'react';
-import FileEvent from './fileEvent';
+import React, { useRef } from "react";
+import FileEvent from "./fileEvent";
 
-function Upload({ style, accept, multiple = false, visible = true, onAfterClick, onAfterChange }) {
+function Upload({
+  style,
+  accept,
+  multiple = false,
+  visible = true,
+  onAfterClick,
+  onAfterChange,
+  onImgChange,
+  onBlur,
+}) {
   const inputSelectorRef = useRef(null);
 
   function onChange(e) {
     const fileList = e?.target?.files || [];
-    if (e.target.value === '') {
+    if (e.target.value === "") {
       return;
     }
     let instance = [];
@@ -30,6 +39,7 @@ function Upload({ style, accept, multiple = false, visible = true, onAfterClick,
       ref={inputSelectorRef}
       onClick={onAfterClick}
       onChange={onChange}
+      onBlur={onBlur}
     />
   );
 }

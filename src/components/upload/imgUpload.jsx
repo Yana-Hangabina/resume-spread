@@ -10,7 +10,8 @@ import { CameraOutlined } from "@ant-design/icons";
 const ImageUpload = ({
   text = "上传头像",
   preventInputManager = false,
-  onAfterClick = () => {},
+  onAfterClick = () => { },
+  onBlur,
   ...otherProps
 }) => {
   return (

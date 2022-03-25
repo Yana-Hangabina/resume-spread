@@ -14,6 +14,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import Test from "../../../components/test";
 import { connect } from "react-redux";
 import PaperDrop from "../../../components/paper-drop";
+import { toPrintPdf } from "../../../util/exportToPdf";
 // import { RenderOperating } from "../../../components/render-operating";
 
 // 创建放置区域
@@ -31,8 +32,8 @@ const menuItems = [
 ];
 const Editor = () => {
   const [wh, setWh] = useState({
-    width: "450px",
-    height: "800px",
+    width: "595px",
+    height: "842px",
   });
   const handleChange = (value) => {
     let arr = value.split("x");
@@ -43,8 +44,10 @@ const Editor = () => {
   };
 
   /* 选择组件 */
-  const selector = useSelector((state) => state.selector);
-
+  // const selector = useSelector((state) => state.selector);
+  const onExport = () => {
+    toPrintPdf('个人简历')
+  }
   return (
     <MainContainer>
       <DndProvider backend={HTML5Backend}>
@@ -66,7 +69,7 @@ const Editor = () => {
             </div>
             <MenuBtnGroup>
               {/* <Button type={"default"}>清空</Button> */}
-              <Button type={"primary"} ghost>
+              <Button type={"primary"} ghost onClick={onExport}>
                 <SaveTwoTone twoToneColor="#42abf2" />
                 保存
               </Button>

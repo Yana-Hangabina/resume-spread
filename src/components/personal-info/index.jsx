@@ -247,6 +247,16 @@ const RenderPersonalInfo = (props) => {
             multiple={false}
             onAfterChange={(files) => {
               setBaseAvatar(files[0].base64URL);
+              dispatch(
+                updateComponentSettings({
+                  cid,
+                  fid,
+                  $settings: {
+                    style,
+                    $children: [files[0].base64URL, baseInfos, detailInfos],
+                  },
+                })
+              );
             }}
           />
         ) : (
@@ -289,6 +299,8 @@ function PersonalInfo({ isShot, cid, $tree }) {
   }
 
   let settings = tree.filter((item) => item.cid === cid)[0].settings;
+
+  console.log(settings);
 
   return settings.map((Item) => {
     const { Component } = SwitchComponent(Item.name);

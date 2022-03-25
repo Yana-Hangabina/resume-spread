@@ -7,7 +7,6 @@ import { nanoid } from "nanoid";
 import { useState } from "react";
 
 const switchSettings = (name) => {
-  console.log(name);
   switch (name) {
     case "Skills":
       return [
@@ -128,7 +127,7 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   );
 
   return (
-    <Canvas wh={wh} ref={dropContainer}>
+    <Canvas wh={wh} ref={dropContainer} id="htmltopdf">
       {tree.map((item) => {
         const { Component } = HitComponent(item.name);
         return <Component key={nanoid()} {...item}></Component>;
