@@ -23,7 +23,7 @@ export const SideLeft = ({ title, menuItems }) => {
           <ComponentMenu>
             {menuItems.map((item, index) => {
               return (
-                <div key={index} style={{ transform: "scale(0.8)" }}>
+                <div key={index} style={{ transform: "scale(0.8)", "border-style": "dashed", "padding": "0.5rem", "border-width": "2px", "border-color": "rgba(0, 0, 0, 0.5)" }}>
                   <Dragger
                     name={item.name}
                     Component={item.Component}
