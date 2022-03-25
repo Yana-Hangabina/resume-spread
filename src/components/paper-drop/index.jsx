@@ -6,6 +6,7 @@ import { appendComponent } from "../../redux/action/tree";
 import { nanoid } from "nanoid";
 
 const switchSettings = (name) => {
+  console.log(name);
   switch (name) {
     case "Skills":
       return [
@@ -69,6 +70,21 @@ const switchSettings = (name) => {
                 },
               ],
             ],
+          },
+        },
+      ];
+    case "SelfAssessment":
+      return [
+        {
+          name: "SelfAssessment",
+          fid: nanoid(),
+          $settings: {
+            style: {},
+            $children: {
+              sid: nanoid(),
+              text: "输入你的自我评价",
+              isEditing: false,
+            },
           },
         },
       ];

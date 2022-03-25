@@ -49,4 +49,6 @@ const LeftTitle = styled.div`
 const ComponentMenu = styled.div`
   height: 100%;
   overflow-y: auto;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
 `;

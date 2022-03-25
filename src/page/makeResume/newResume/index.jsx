@@ -1,7 +1,8 @@
 import { SideLeft } from "../../../components/side-left";
-import { SideRight } from "../../../components/side-right";
+// import { SideRight } from "../../../components/side-right";
 import PersonalInfo from "../../../components/personal-info";
 import Exercitation from "../../../components/exercitation";
+import SelfAssessment from "../../../components/self-assessment";
 import Skills from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
@@ -26,6 +27,7 @@ const menuItems = [
   { name: "Skills", Component: Skills },
   // { name: "Test", Component: Test },
   { name: "Exercitation", Component: Exercitation },
+  {name:"SelfAssessment",Component:SelfAssessment}
 ];
 const Editor = () => {
   const [wh, setWh] = useState({
