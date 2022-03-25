@@ -2,7 +2,7 @@ import { SideLeft } from "../../../components/side-left";
 import { SideRight } from "../../../components/side-right";
 import PersonalInfo from "../../../components/personal-info";
 import Exercitation from "../../../components/exercitation";
-import { Skills } from "../../../components/skills";
+import Skills from "../../../components/skills";
 import { Button, Empty, Card, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ const menuItems = [
     Component: PersonalInfo,
   },
   { name: "Skills", Component: Skills },
-  { name: "Test", Component: Test },
+  // { name: "Test", Component: Test },
   { name: "Exercitation", Component: Exercitation },
 ];
 const Editor = () => {
@@ -46,24 +46,24 @@ const Editor = () => {
   return (
     <MainContainer>
       <DndProvider backend={HTML5Backend}>
-        <SideLeft title={"物料区"} menuItems={menuItems}></SideLeft>
+        <SideLeft title={"组件区"} menuItems={menuItems} />
         <MidContent>
           <HeaderMenu>
             <div>
-              画布尺寸:&nbsp;&nbsp;&nbsp;&nbsp;
-              {/*也许这里应该是A4这样的尺寸？*/}
+              简历尺寸:&nbsp;&nbsp;&nbsp;&nbsp;
               <Select
-                defaultValue="300x450"
+                defaultValue="A4"
                 style={{ width: 120 }}
                 onChange={handleChange}
               >
-                <Option value="450x800">450x800</Option>
+                <Option value="A4">A4</Option>
+                {/* <Option value="450x800">450x800</Option>
                 <Option value="450x1000">450x1000</Option>
-                <Option value="600x1200">600x1200</Option>
+                <Option value="600x1200">600x1200</Option> */}
               </Select>
             </div>
             <MenuBtnGroup>
-              <Button type={"default"}>清空画布</Button>
+              {/* <Button type={"default"}>清空</Button> */}
               <Button type={"primary"} ghost>
                 <SaveTwoTone twoToneColor="#42abf2" />
                 保存
@@ -75,11 +75,11 @@ const Editor = () => {
             </MenuBtnGroup>
           </HeaderMenu>
           <CanvasContainer>
-            <PaperDrop menuItems={menuItems} wh={wh}></PaperDrop>
+            <PaperDrop menuItems={menuItems} wh={wh} />
           </CanvasContainer>
         </MidContent>
       </DndProvider>
-      <SideRight
+      {/* <SideRight
         title={"操作区"}
         render={() => {
           <Empty
@@ -87,7 +87,7 @@ const Editor = () => {
             description={"未选择组件"}
           />;
         }}
-      ></SideRight>
+      ></SideRight> */}
     </MainContainer>
   );
 };

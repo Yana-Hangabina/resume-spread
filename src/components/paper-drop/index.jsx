@@ -4,12 +4,40 @@ import styled from "styled-components";
 import { appendComponent } from "../../redux/action/tree";
 
 import { nanoid } from "nanoid";
+
+const switchSettings = (name) => {
+  switch (name) {
+    case 'Skills': return [
+      {
+        name: "Skill",
+        fid: nanoid(),
+        $settings: {
+          style: {  },
+          $children: [{
+            sid: nanoid(),
+            text: "输入你的技能",
+            isEditing: false
+          }],
+        },
+      },
+    ];
+    default: return [
+      {
+        name: "Text",
+        fid: nanoid(),
+        $settings: {
+          style: { color: "#1890ff" },
+          $children: "",
+        },
+      },
+    ]
+  }
+}
 const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   const { tree } = $tree;
   const HitComponent = (name) => {
     return menuItems.filter((item) => item.name === name)[0];
   };
-
   const [{ isOver, item }, dropContainer] = useDrop(
     () => ({
       accept: "box",
@@ -18,19 +46,16 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
         item: monitor.getItem(),
       }),
       drop: (item, monitor) => {
-        console.log("19--", item, monitor.isOver({ shallow: true }));
         appendComponent({
-          id: nanoid(),
+          cid: nanoid(),
           top: 0,
-          settings: [],
+          settings: switchSettings(item.type),
           name: item.type,
         });
       },
     }),
     []
   );
-
-  console.log("31--", tree, item);
 
   return (
     <Canvas wh={wh} ref={dropContainer}>

@@ -53,6 +53,7 @@ function createWindow() {
 
   if (isDev) {
     mainWindow.loadURL(`http://127.0.0.1:3000`);
+    //mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadURL(`file://${path.join(__dirname, "../build/index.html")}`);
   }
