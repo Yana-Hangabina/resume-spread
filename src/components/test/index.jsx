@@ -115,8 +115,6 @@ function Test({ isShot, cid, $tree }) {
 
   let settings = tree.filter((item) => item.cid === cid)[0].settings;
 
-  console.log("@", settings);
-
   return settings.map((Item) => {
     const { Component } = SwitchComponent(Item.name);
     return (

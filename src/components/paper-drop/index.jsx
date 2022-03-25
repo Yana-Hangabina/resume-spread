@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { appendComponent } from "../../redux/action/tree";
 
 import { nanoid } from "nanoid";
+import { useState } from "react";
 
 const switchSettings = (name) => {
   console.log(name);
@@ -106,6 +107,7 @@ const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   const HitComponent = (name) => {
     return menuItems.filter((item) => item.name === name)[0];
   };
+  const [clientTop, setClientTop] = useState(0);
   const [{ isOver, item }, dropContainer] = useDrop(
     () => ({
       accept: "box",
