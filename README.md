@@ -25,7 +25,7 @@
 
 #### 用户
 
-- 下载可执行文件：[夸克网盘](https://pan.quark.cn/s/e0e8bc760988)
+- 下载可执行文件：[夸克网盘](https://pan.quark.cn/s/4032f1da2441) [CowTransfer（提取码:px803f）](https://cowtransfer.com/s/f86deac135ae44)
 
 #### 团队成员
 
