@@ -23,7 +23,7 @@ export const SideLeft = ({ title, menuItems }) => {
           <ComponentMenu>
             {menuItems.map((item, index) => {
               return (
-                <div key={index} style={{ transform: "scale(0.8)" }}>
+                <div key={index} style={{ transform: "scale(0.8)", borderStyle: "dashed", padding: "0.5rem", borderWidth: "2px", borderColor: "rgba(0, 0, 0, 0.5)" }}>
                   <Dragger
                     name={item.name}
                     Component={item.Component}
@@ -49,4 +49,6 @@ const LeftTitle = styled.div`
 const ComponentMenu = styled.div`
   height: 100%;
   overflow-y: auto;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
 `;

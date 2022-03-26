@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-// import { connect } from "react-redux";
-import { updateSelectComponent } from "../../redux/action/selector";
+import { connect, useDispatch } from "react-redux";
+import { updateComponentSettings } from "../../redux/action/tree";
 import { ComponentTitle } from "../component-title";
+import { nanoid } from "nanoid";
 /* fake Avatar */
 import avatar from "../../assets/avatar.png";
 import ImageUpload from "../upload/imgUpload";
 
 import { Input, Form } from "antd";
-import { v4 as uuid } from "uuid";
-import { useDispatch, useSelector } from "react-redux";
 
 const PersonalInfoShot = () => {
   return (
@@ -23,13 +22,13 @@ const PersonalInfoShot = () => {
       <MainContainer>
         <Text>
           <Form name="personal-info" size="small">
-            <FormItem label={"学历"} key={1001}>
+            <FormItem label={"学历"} key={nanoid()}>
               <span>你的院校</span>
             </FormItem>
-            <FormItem label={"手机"} key={1002}>
+            <FormItem label={"手机"} key={nanoid()}>
               <span>手机号码</span>
             </FormItem>
-            <FormItem label={"邮箱"} key={1003}>
+            <FormItem label={"邮箱"} key={nanoid()}>
               <span>xxx@xx.com</span>
             </FormItem>
           </Form>
@@ -40,45 +39,17 @@ const PersonalInfoShot = () => {
   );
 };
 
-const RenderPersonalInfo = ({ Item }) => {
-  const dispatch = useDispatch();
-  // const state = useSelector((state) => state);
-  const [baseAvatar, setBaseAvatar] = useState(null);
-  const [baseInfos, setBaseInfos] = useState([
-    {
-      id: uuid(),
-      text: "张三",
-      isEditing: true,
-    },
-    {
-      id: uuid(),
-      text: "前端开发实习生",
-      isEditing: true,
-    },
-  ]);
-  const [detailInfos, setDetailInfos] = useState([
-    {
-      id: uuid(),
-      key: "学历",
-      value: "你的院校",
-      isKeyEditing: false,
-      isValueEditing: false,
-    },
-    {
-      id: uuid(),
-      key: "手机",
-      value: "手机号码",
-      isKeyEditing: false,
-      isValueEditing: false,
-    },
-    {
-      id: uuid(),
-      key: "邮箱",
-      value: "xxx@xx.com",
-      isKeyEditing: false,
-      isValueEditing: false,
-    },
-  ]);
+
+const RenderPersonalInfo = (props) => {
+  const { dispatch, fid, cid, tree } = props;
+  let $this = tree.filter((item) => item.cid === cid)[0];
+  let $settings = $this.settings.filter((item) => item.fid === fid)[0]
+    .$settings;
+  const { $children, style } = $settings;
+  const [baseAvatar, setBaseAvatar] = useState($children[0]);
+  const [baseInfos, setBaseInfos] = useState($children[1]);
+  const [detailInfos, setDetailInfos] = useState($children[2]);
+
   /* 姓名职位信息的失去焦点保存 */
   const handleBlurBase = (idx) => {
     return (e) => {
@@ -170,18 +141,21 @@ const RenderPersonalInfo = ({ Item }) => {
   };
 
   return (
-    <InfoContainer
-      onClick={() => {
-        dispatch(
-          updateSelectComponent({
-            currentSettings: Item.$settings,
-            currentComponent: Item.component.name,
-            currentComponentSelectId: Item.id,
-          })
-        );
-      }}
-    >
-      <NameContainer>
+    <>
+      <NameContainer
+        onBlur={() => {
+          dispatch(
+            updateComponentSettings({
+              cid,
+              fid,
+              $settings: {
+                style,
+                $children: [baseAvatar, baseInfos, detailInfos],
+              },
+            })
+          );
+        }}
+      >
         <Name onClick={handleClickBase(0)}>
           {baseInfos[0].isEditing ? (
             <Input placeholder="姓名" onBlur={handleBlurBase(0)} />
@@ -199,7 +173,20 @@ const RenderPersonalInfo = ({ Item }) => {
         <div></div>
       </NameContainer>
       <ComponentTitle title={"基本资料"} />
-      <MainContainer>
+      <MainContainer
+        onBlur={() => {
+          dispatch(
+            updateComponentSettings({
+              cid,
+              fid,
+              $settings: {
+                style,
+                $children: [baseAvatar, baseInfos, detailInfos],
+              },
+            })
+          );
+        }}
+      >
         <Text>
           <Form name="personal-info" size="small">
             {detailInfos.map((detailInfo, index) => {
@@ -226,7 +213,7 @@ const RenderPersonalInfo = ({ Item }) => {
                           setDetailInfos((prev) => {
                             let newInfo = [...prev];
                             newInfo.push({
-                              id: uuid(),
+                              id: nanoid(),
                               key: "xxx",
                               value: "xxx",
                               isKeyEditing: true,
@@ -273,51 +260,95 @@ const RenderPersonalInfo = ({ Item }) => {
           </AvatarWrapper>
         )}
       </MainContainer>
-    </InfoContainer>
+    </>
   );
 };
 
-const PersonalInfo = ({ isShot, id }) => {
+const fragmentComponent = [
+  { name: "RenderPersonalInfo", Component: RenderPersonalInfo },
+];
+
+const SwitchComponent = (name) => {
+  return fragmentComponent.filter((item) => item.name === name)[0];
+};
+
+function PersonalInfo({ isShot, cid, $tree }) {
+  const dispatch = useDispatch();
+  const { tree } = $tree;
+
   const shotSetting = [
     {
-      id: 1,
+      id: nanoid(),
       component: PersonalInfoShot,
-      $settings: {
-        style: {
-          color: "#1890ff",
-        },
-        children: "",
-      },
+      $settings: {},
     },
   ];
 
-  const [settings, setSettings] = useState([
-    {
-      id: 1,
-      component: RenderPersonalInfo,
-      $settings: {
-        style: {
-          color: "#1890ff",
-        },
-      },
-    },
-  ]);
-
   if (isShot) {
-    return shotSetting.map((Item, index) => {
-      return <Item.component key={uuid()} {...Item.$settings} />;
+    return shotSetting.map((Item) => {
+      return <Item.component key={nanoid()} {...Item.$settings} />;
     });
   }
 
-  return settings.map((Item, index) => {
+  let settings = tree.filter((item) => item.cid === cid)[0].settings;
+
+  return settings.map((Item) => {
+    const { Component } = SwitchComponent(Item.name);
     return (
-      // eslint-disable-next-line react/jsx-pascal-case
-      <Item.component Item={Item} key={uuid()} {...Item.$settings} />
+      <InfoContainer key={nanoid()}>
+        <Component fid={Item.fid} tree={tree} dispatch={dispatch} cid={cid} />
+      </InfoContainer>
     );
   });
-};
+}
 
-export default PersonalInfo;
+export default connect((state) => {
+  return {
+    $tree: state.tree,
+  };
+})(PersonalInfo);
+
+// const PersonalInfo = ({ isShot, id }) => {
+//   const shotSetting = [
+//     {
+//       id: 1,
+//       component: PersonalInfoShot,
+//       $settings: {
+//         style: {
+//           color: "#1890ff",
+//         },
+//         children: "",
+//       },
+//     },
+//   ];
+
+//   const [settings, setSettings] = useState([
+//     {
+//       id: 1,
+//       component: RenderPersonalInfo,
+//       $settings: {
+//         style: {
+//           color: "#1890ff",
+//         },
+//       },
+//     },
+//   ]);
+
+//   if (isShot) {
+//     return shotSetting.map((Item, index) => {
+//       return <Item.component key={uuid()} {...Item.$settings} />;
+//     });
+//   }
+
+//   return settings.map((Item, index) => {
+//     return (
+//       // eslint-disable-next-line react/jsx-pascal-case
+//       <Item.component key={uuid()} {...Item.$settings} />
+//     );
+//   });
+// };
+
+// export default PersonalInfo;
 
 const InfoContainer = styled.div`
   /* transform: scale(0.5); */

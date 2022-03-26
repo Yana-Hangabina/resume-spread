@@ -36,13 +36,13 @@ const tree = (state = inialState, actions) => {
       });
       return state;
     case "APPEND_COMPONENT_SETTINGS":
-      state.tree = state.tree.map(item => {
+      state.tree = state.tree.map((item) => {
         if (item.cid === data.cid) {
-          item.settings.push(data.append)
+          item.settings.push(data.append);
         }
-        return item
-      })
-      return { ...state }
+        return item;
+      });
+      return { ...state };
     default:
       return state;
   }

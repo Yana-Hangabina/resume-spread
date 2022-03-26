@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
-const { postDb, getDb } = require("../src/util/file");
+const { postDb, getDb } = require("../src/util/file.js");
 
 const filePath = app.getAppPath();
 const dataPath = filePath + "/data/";
@@ -45,6 +45,7 @@ function createWindow() {
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
+      contextIsolation: false,
       preload: path.resolve(__dirname, "preload.js"),
     },
     icon: path.join(__dirname, "../public/favicon.ico"),
@@ -52,9 +53,9 @@ function createWindow() {
 
   if (isDev) {
     mainWindow.loadURL(`http://127.0.0.1:3000`);
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadURL(`file://${path.join(__dirname, "../dist/index.html")}`);
+    mainWindow.loadURL(`file://${path.join(__dirname, "../build/index.html")}`);
   }
 }
 
