@@ -2,7 +2,7 @@
 
 拖拽式的低代码简历页面生成器
 
-Forked from (CodeUp)[https://codeup.aliyun.com/6212f97e74c3f3b550746f5d/resume-spread]
+Forked from [CodeUp](https://codeup.aliyun.com/6212f97e74c3f3b550746f5d/resume-spread)
 
 <!-- PROJECT LOGO -->
 <br />
