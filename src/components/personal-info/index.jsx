@@ -44,10 +44,12 @@ const RenderPersonalInfo = (props) => {
   let $this = tree.filter((item) => item.cid === cid)[0];
   let $settings = $this.settings.filter((item) => item.fid === fid)[0]
     .$settings;
+
   const { $children, style } = $settings;
   const [baseAvatar, setBaseAvatar] = useState($children[0]);
   const [baseInfos, setBaseInfos] = useState($children[1]);
   const [detailInfos, setDetailInfos] = useState($children[2]);
+
   /* 姓名职位信息的失去焦点保存 */
   const handleBlurBase = (idx) => {
     return (e) => {
@@ -246,17 +248,22 @@ const RenderPersonalInfo = (props) => {
             accept="image/*"
             multiple={false}
             onAfterChange={(files) => {
+              const reader = new FileReader();
+              reader.readAsDataURL(files[0].file);
+              reader.onload = () => {
+                console.log(reader.result);
+                dispatch(
+                  updateComponentSettings({
+                    cid,
+                    fid,
+                    $settings: {
+                      style,
+                      $children: [reader.result, baseInfos, detailInfos],
+                    },
+                  })
+                );
+              };
               setBaseAvatar(files[0].base64URL);
-              dispatch(
-                updateComponentSettings({
-                  cid,
-                  fid,
-                  $settings: {
-                    style,
-                    $children: [files[0].base64URL, baseInfos, detailInfos],
-                  },
-                })
-              );
             }}
           />
         ) : (
@@ -317,48 +324,6 @@ export default connect((state) => {
     $tree: state.tree,
   };
 })(PersonalInfo);
-
-// const PersonalInfo = ({ isShot, id }) => {
-//   const shotSetting = [
-//     {
-//       id: 1,
-//       component: PersonalInfoShot,
-//       $settings: {
-//         style: {
-//           color: "#1890ff",
-//         },
-//         children: "",
-//       },
-//     },
-//   ];
-
-//   const [settings, setSettings] = useState([
-//     {
-//       id: 1,
-//       component: RenderPersonalInfo,
-//       $settings: {
-//         style: {
-//           color: "#1890ff",
-//         },
-//       },
-//     },
-//   ]);
-
-//   if (isShot) {
-//     return shotSetting.map((Item, index) => {
-//       return <Item.component key={uuid()} {...Item.$settings} />;
-//     });
-//   }
-
-//   return settings.map((Item, index) => {
-//     return (
-//       // eslint-disable-next-line react/jsx-pascal-case
-//       <Item.component key={uuid()} {...Item.$settings} />
-//     );
-//   });
-// };
-
-// export default PersonalInfo;
 
 const InfoContainer = styled.div`
   /* transform: scale(0.5); */

@@ -10,7 +10,6 @@ const A4Height = 841.89;
 export function toPrintPdf(resumeName) {
   let name = resumeName || "未命名文件";
   const dom = document.querySelector("#htmltopdf");
-  console.log(dom);
   if (dom) {
     html2canvas(dom, {
       allowTaint: true,

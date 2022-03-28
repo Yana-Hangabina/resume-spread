@@ -1,4 +1,5 @@
 "use strict";
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const fs = require("fs");
 const path = require("path");
@@ -754,6 +755,7 @@ module.exports = function (webpackEnv) {
             },
           },
         }),
+      isEnvDevelopment && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter

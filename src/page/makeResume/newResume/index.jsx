@@ -1,20 +1,23 @@
 import { SideLeft } from "../../../components/side-left";
 // import { SideRight } from "../../../components/side-right";
 import PersonalInfo from "../../../components/personal-info";
-import Exercitation from "../../../components/exercitation";
 import SelfAssessment from "../../../components/self-assessment";
 import Skills from "../../../components/skills";
-import { Button, Empty, Card, Select } from "antd";
+import { Button, Select } from "antd";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DeleteTwoTone, SaveTwoTone } from "@ant-design/icons";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import Test from "../../../components/test";
 import { connect } from "react-redux";
 import PaperDrop from "../../../components/paper-drop";
+import { deleteTree, initalTree, quashTree } from "../../../redux/action/tree";
 import { toPrintPdf } from "../../../util/exportToPdf";
+import H from "../../../components/new";
+import { useLocation } from "react-router";
+import html2canvas from "html2canvas";
+const { ipcRenderer } = window.require("electron");
 // import { RenderOperating } from "../../../components/render-operating";
 
 // 创建放置区域
@@ -26,11 +29,13 @@ const menuItems = [
     Component: PersonalInfo,
   },
   { name: "Skills", Component: Skills },
+
   // { name: "Test", Component: Test },
-  { name: "Exercitation", Component: Exercitation },
-  {name:"SelfAssessment",Component:SelfAssessment}
+
+  { name: "SelfAssessment", Component: SelfAssessment },
+  { name: "H", Component: H },
 ];
-const Editor = () => {
+const Editor = ({ $tree }) => {
   const [wh, setWh] = useState({
     width: "595px",
     height: "842px",
@@ -46,8 +51,32 @@ const Editor = () => {
   /* 选择组件 */
   // const selector = useSelector((state) => state.selector);
   const onExport = () => {
-    toPrintPdf('个人简历')
-  }
+    toPrintPdf("个人简历");
+  };
+  const dispatch = useDispatch();
+  let location = useLocation();
+  let id = location.search.split("=")[1]; //获取简历id
+  const { tree } = $tree;
+  useEffect(() => {
+    ipcRenderer.invoke("load-settings", id).then((res) => {
+      dispatch(initalTree(res.settings));
+    });
+  }, []);
+  const onSave = () => {
+    const dom = document.querySelector("#htmltopdf");
+    if (dom) {
+      html2canvas(dom, {
+        allowTaint: true,
+      }).then((canvas) => {
+        let pageData = canvas.toDataURL("image/jpeg", 1.0);
+        ipcRenderer.send("async-write-settings", {
+          id,
+          preview: pageData,
+          settings: tree,
+        });
+      });
+    }
+  };
   return (
     <MainContainer>
       <DndProvider backend={HTML5Backend}>
@@ -68,14 +97,45 @@ const Editor = () => {
               </Select>
             </div>
             <MenuBtnGroup>
-              {/* <Button type={"default"}>清空</Button> */}
-              <Button type={"primary"} ghost onClick={onExport}>
-                <SaveTwoTone twoToneColor="#42abf2" />
+              <Button
+                style={{
+                  margin: "0 16px",
+                }}
+                type={"primary"}
+                ghost
+                onClick={onSave}
+              >
                 保存
               </Button>
-              <Button danger>
+              <Button
+                style={{
+                  margin: "0 16px",
+                }}
+                type={"primary"}
+                ghost
+                onClick={onExport}
+              >
+                <SaveTwoTone twoToneColor="#42abf2" />
+                保存为PDF
+              </Button>
+              <Button
+                style={{
+                  margin: "0 16px",
+                }}
+                danger
+                onClick={() => dispatch(quashTree())}
+              >
+                撤销
+              </Button>
+              <Button
+                style={{
+                  margin: "0 16px",
+                }}
+                danger
+                onClick={() => dispatch(deleteTree())}
+              >
                 <DeleteTwoTone twoToneColor="#eb2f96" />
-                删除
+                清空
               </Button>
             </MenuBtnGroup>
           </HeaderMenu>
@@ -98,7 +158,9 @@ const Editor = () => {
 };
 
 export default connect((state) => {
-  return state;
+  return {
+    $tree: state.tree,
+  };
 })(Editor);
 
 const MainContainer = styled.div`

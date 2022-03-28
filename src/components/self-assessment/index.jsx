@@ -94,7 +94,7 @@ const SelfAssessment = (props) => {
 };
 
 const fragmentComponent = [
-  { name: "SelfAssessment", Component: SelfAssessment },
+  { name: "SelfAssessment", Component:SelfAssessment },
 ];
 
 const SwitchComponent = (name) => {
@@ -124,6 +124,7 @@ function SelfAssessments({ isShot, cid, $tree }) {
   console.log("@", settings);
 
   return settings.map((Item) => {
+    console.log(Item);
     const { Component } = SwitchComponent(Item.name);
     return (
       <InfoContainer key={nanoid()}>

@@ -23,12 +23,20 @@
 3. 运行 `yarn install` 安装模块依赖
 4. 运行 `yarn dev` 启动
 
-#### 用户
+##### 打包
 
-- 下载可执行文件：[夸克网盘](https://pan.quark.cn/s/4032f1da2441) [CowTransfer（提取码:px803f）](https://cowtransfer.com/s/f86deac135ae44)
+1. 在根目录下运行 `yarn build`
+2. 运行 `cd app`
+3. 运行 `yarn install` 安装打包依赖
+4. 运行 `yarn run pack` 打包
+
+#### 用户（暂仅支持 Windows x64）
+
+- 下载便携版：[Github Releases](https://github.com/Yana-Hangabina/resume-spread/releases/download/v1.0.5/resume-spread.v1.0.5.zip)
 
 #### 团队成员
 
+- 指导老师：佳心
 - 张坤
 - 秦海峰
 - 姜家乐

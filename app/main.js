@@ -5,7 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const { app, BrowserWindow, ipcMain } = require("electron");
 const isDev = require("electron-is-dev");
-const { postDb, getDb } = require("../src/util/file.js");
+const { postDb, getDb } = require("./util/file");
 
 const filePath = app.getAppPath();
 const dataPath = filePath + "/data/";
@@ -23,15 +23,36 @@ ipcMain.on("async-write-file", async function (event, arg) {
     fs.mkdir(dataPath + arg, function (e) {
       postDb(dataPath + arg + "/setting.json", {
         preview: "",
-        settings: {},
+        settings: [],
       });
     });
+  });
+});
+
+ipcMain.on("async-write-settings", async function (event, arg) {
+  const { id, settings, preview } = arg;
+  postDb(dataPath + id + "/setting.json", {
+    preview,
+    settings,
   });
 });
 
 ipcMain.handle("load-settings", async (event, args) => {
   const settings = await getDb(dataPath + args + "/setting.json");
   return settings;
+});
+
+ipcMain.handle("read-data", async (e, a) => {
+  const data = fs.readdirSync(dataPath);
+  return Promise.all(
+    data.map(async (item) => {
+      const $data = await getDb(dataPath + item + "/setting.json");
+      return {
+        id: item,
+        preview: $data.preview,
+      };
+    })
+  );
 });
 
 function createWindow() {
@@ -55,7 +76,7 @@ function createWindow() {
     mainWindow.loadURL(`http://127.0.0.1:3000`);
     //mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadURL(`file://${path.join(__dirname, "../build/index.html")}`);
+    mainWindow.loadURL(`file://${path.join(__dirname, "./build/index.html")}`);
   }
 }
 

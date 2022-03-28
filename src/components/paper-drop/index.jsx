@@ -8,6 +8,7 @@ import { useState } from "react";
 
 const switchSettings = (name) => {
   switch (name) {
+    case 1:
     case "Skills":
       return [
         {
@@ -73,6 +74,49 @@ const switchSettings = (name) => {
           },
         },
       ];
+    case "H":
+      return [
+        {
+          name: "RenderH",
+          fid: nanoid(),
+          $settings: {
+            style: {},
+            $children: [
+              [
+                {
+                  id: nanoid(),
+                  text: "项目时间",
+                  isEditing: true,
+                },
+                {
+                  id: nanoid(),
+                  text: "项目名称",
+                  isEditing: true,
+                },
+                {
+                  id: nanoid(),
+                  text: "项目过程",
+                  isEditing: true,
+                },
+              ],
+              [
+                {
+                  id: nanoid(),
+                  text: "项目内容",
+                  isEditing: true,
+                },
+              ],
+              [
+                {
+                  id: nanoid(),
+                  text: "项目地址",
+                  isEditing: true,
+                },
+              ],
+            ],
+          },
+        },
+      ];
     case "SelfAssessment":
       return [
         {
@@ -88,6 +132,7 @@ const switchSettings = (name) => {
           },
         },
       ];
+
     default:
       return [
         {
@@ -103,6 +148,7 @@ const switchSettings = (name) => {
 };
 const PaperDorp = ({ wh, $tree, selector, menuItems, appendComponent }) => {
   const { tree } = $tree;
+  console.log(tree);
   const HitComponent = (name) => {
     return menuItems.filter((item) => item.name === name)[0];
   };

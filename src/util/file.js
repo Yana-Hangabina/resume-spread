@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { promisify } = require("util");
-
+const { ipcRenderer } = require("electron");
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 

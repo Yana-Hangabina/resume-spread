@@ -1,31 +1,45 @@
-import { Modal, Input } from "antd";
-import React, { useState } from "react";
+import { Modal, Input, Drawer, Empty } from "antd";
+import React, { useEffect, useState } from "react";
 import { TopHeader } from "../../components/topHeader";
 import styled from "styled-components";
 import { Route, Routes, useNavigate } from "react-router";
 
 import { FileOutlined, FileDoneOutlined } from "@ant-design/icons";
-
+import empty from "../../assets/empty.png";
 import Editor from "./newResume";
+import { nanoid } from "nanoid";
 const { ipcRenderer } = window.require("electron");
 export const MakeResume = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [name, setName] = useState("");
-
+  const [isDrawerSee, setIsDrawerSee] = useState(false);
+  const [ids, setIds] = useState([]);
+  const showDrawer = () => {
+    setIsDrawerSee(true);
+  };
   const showModal = () => {
     setIsModalVisible(true);
+  };
+  const onClose = () => {
+    setIsDrawerSee(false);
   };
 
   const handleOk = async () => {
     setIsModalVisible(false);
     ipcRenderer.send("async-write-file", name);
-    navigate("/makeresume/resume");
+    navigate(`/makeresume/resume?pid=${name}`);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    ipcRenderer.invoke("read-data").then((res) => {
+      setIds(res);
+    });
+  }, []);
 
   return (
     <div>
@@ -51,6 +65,32 @@ export const MakeResume = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
               </Modal>
+              <Drawer
+                title="加载一个本地模板"
+                placement={"left"}
+                width={500}
+                onClose={onClose}
+                visible={isDrawerSee}
+                closable
+              >
+                <DrawerWrapper>
+                  {ids.map((item) => {
+                    return (
+                      <div
+                        className="container_drawer"
+                        key={nanoid()}
+                        onClick={() => {
+                          navigate(`/makeresume/resume?pid=${item.id}`);
+                        }}
+                      >
+                        <img className="preview" src={item.preview || empty} />
+                        <div>{item.id}</div>
+                      </div>
+                    );
+                  })}
+                </DrawerWrapper>
+              </Drawer>
+
               <BtnGroup>
                 <DivBtn
                   onClick={() => {
@@ -69,7 +109,7 @@ export const MakeResume = () => {
                 </DivBtn>
                 <DivBtn
                   onClick={() => {
-                    navigate("/resumetemp");
+                    showDrawer();
                   }}
                 >
                   <FileDoneOutlined />
@@ -93,6 +133,7 @@ export const MakeResume = () => {
 };
 
 const DivBtn = styled.div`
+  border-radius: 12px;
   margin: 0 30px;
   background-color: #fff;
   display: flex;
@@ -113,63 +154,38 @@ const BtnGroup = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #69c0ff;
+  background-color: #a0d5f9;
   height: calc(100vh - 60px);
 `;
 
-const DragDiv = styled.div`
-  width: 200px;
-  height: 200px;
-  background-color: #1890ff;
-`;
-
-const Container = styled.div`
-  display: flex;
-  height: calc(100vh - 60px);
-`;
-
-const ComponentArea = styled.div`
-  width: 20vw;
-  padding: 10px;
+const DrawerWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-`;
-
-const MakeArea = styled.div`
-  background-color: #edf2ff;
-  padding: 15px;
-  width: 56vw;
-  height: 100%;
-`;
-
-const EditArea = styled.div`
-  width: 24vw;
-  height: 100%;
-`;
-
-const MidContent = styled.div`
-  flex: 1;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-`;
-
-const HeaderMenu = styled.div`
-  width: 100%;
-  height: 70px;
-  display: flex;
-  padding: 0 20px;
-  margin-bottom: 20px;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0px 10px 20px #efefef;
-`;
-
-const MenuBtnGroup = styled.div`
-  display: flex;
-  min-width: 280px;
-  justify-content: space-around;
+  .container_drawer {
+    border: 1px solid #1890ff;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+    margin: 4px 7px;
+    padding: 15px 15px;
+    :hover {
+      color: #1890ff;
+    }
+    div {
+      transition: color 0.3s;
+    }
+  }
+  .preview {
+    width: 100px;
+    height: 150px;
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: small;
+  }
 `;

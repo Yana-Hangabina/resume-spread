@@ -27,6 +27,7 @@ function Upload({
     for (let file of fileList) {
       instance.push(new FileEvent(file));
     }
+    /* 图片选择之后改变状态并同步redux */
     onAfterChange && onAfterChange(instance);
   }
 

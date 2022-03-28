@@ -43,6 +43,15 @@ const tree = (state = inialState, actions) => {
         return item;
       });
       return { ...state };
+    case "DELETE_TREE_SETTINGS":
+      state.tree = [];
+      return { ...state };
+    case "INITAL_TREE":
+      state.tree = data;
+      return { ...state };
+    case "QUASH_TREE":
+      state.tree.pop();
+      return { ...state };
     default:
       return state;
   }
