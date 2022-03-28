@@ -2,12 +2,14 @@
 
 拖拽式的低代码简历页面生成器
 
+Forked from (CodeUp)[https://codeup.aliyun.com/6212f97e74c3f3b550746f5d/resume-spread]
+
 <!-- PROJECT LOGO -->
 <br />
 
 <p align="center">
   <a href="https://codeup.aliyun.com/6212f97e74c3f3b550746f5d/resume-spread">
-    <img src="https://codeup.aliyun.com/6212f97e74c3f3b550746f5d/resume-spread/raw/master/public/logo512.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/Yana-Hangabina/resume-spread/blob/master/public/logo192.png?raw=true" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Résumé 展开</h3>
